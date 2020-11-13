@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var fs = require("fs");
+
  
 var app = express();
 var jsonParser = bodyParser.json();
@@ -65,7 +66,7 @@ app.delete("/api/users/:id", function(req, res){
     var data = fs.readFileSync("users.json", "utf8");
     var users = JSON.parse(data);
     var index = -1;
-    // находим индекс пользователя в массиве
+    
     for(var i=0; i<users.length; i++){
         if(users[i].id==id){
             index=i;
@@ -73,18 +74,18 @@ app.delete("/api/users/:id", function(req, res){
         }
     }
     if(index > -1){
-        // удаляем пользователя из массива по индексу
+        
         var user = users.splice(index, 1)[0];
         var data = JSON.stringify(users);
         fs.writeFileSync("users.json", data);
-        // отправляем удаленного пользователя
+        
         res.send(user);
     }
     else{
         res.status(404).send();
     }
 });
-// изменение пользователя
+
 app.put("/api/users", jsonParser, function(req, res){
       
     if(!req.body) return res.sendStatus(400);
@@ -102,7 +103,7 @@ app.put("/api/users", jsonParser, function(req, res){
             break;
         }
     }
-    // изменяем данные у пользователя
+    
     if(user){
         user.age = userAge;
         user.name = userName;
