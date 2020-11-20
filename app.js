@@ -1,121 +1,66 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var fs = require("fs");
+const Sequelize = require("sequelize");
+const express = require("express");
+const bodyParser = require("body-parser");
+ 
+const app = express();
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
- 
-var app = express();
-var jsonParser = bodyParser.json();
- 
-app.use(express.static(__dirname + "/public"));
-// получение списка данных
-app.get("/api/users", function(req, res){
-      
-    var content = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(content);
-    res.send(users);
-});
-// получение одного пользователя по id
-app.get("/api/users/:id", function(req, res){
-      
-    var id = req.params.id; // получаем id
-    var content = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(content);
-    var user = null;
-    // находим в массиве пользователя по id
-    for(var i=0; i<users.length; i++){
-        if(users[i].id==id){
-            user = users[i];
-            break;
-        }
-    }
-    // отправляем пользователя
-    if(user){
-        res.send(user);
-    }
-    else{
-        res.status(404).send();
-    }
-});
-// получение отправленных данных
-app.post("/api/users", jsonParser, function (req, res) {
-     
-    if(!req.body) return res.sendStatus(400);
-     
-    var userName = req.body.name;
-    var userAge = req.body.age;
-    var user = {name: userName, age: userAge};
-     
-    var data = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(data);
-     
-    // находим максимальный id
-    var id = Math.max.apply(Math,users.map(function(o){return o.id;}))
-    // увеличиваем его на единицу
-    user.id = id+1;
-    // добавляем пользователя в массив
-    users.push(user);
-    var data = JSON.stringify(users);
-    // перезаписываем файл с новыми данными
-    fs.writeFileSync("users.json", data);
-    res.send(user);
-});
- // удаление пользователя по id
-app.delete("/api/users/:id", function(req, res){
-      
-    var id = req.params.id;
-    var data = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(data);
-    var index = -1;
-    
-    for(var i=0; i<users.length; i++){
-        if(users[i].id==id){
-            index=i;
-            break;
-        }
-    }
-    if(index > -1){
-        
-        var user = users.splice(index, 1)[0];
-        var data = JSON.stringify(users);
-        fs.writeFileSync("users.json", data);
-        
-        res.send(user);
-    }
-    else{
-        res.status(404).send();
-    }
+const sequelize = new Sequelize("postgres", "postgres", "1234567", {
+  dialect: "postgres"
 });
 
-app.put("/api/users", jsonParser, function(req, res){
-      
-    if(!req.body) return res.sendStatus(400);
-     
-    var userId = req.body.id;
-    var userName = req.body.name;
-    var userAge = req.body.age;
-     
-    var data = fs.readFileSync("users.json", "utf8");
-    var users = JSON.parse(data);
-    var user;
-    for(var i=0; i<users.length; i++){
-        if(users[i].id==userId){
-            user = users[i];
-            break;
-        }
-    }
-    
-    if(user){
-        user.age = userAge;
-        user.name = userName;
-        var data = JSON.stringify(users);
-        fs.writeFileSync("users.json", data);
-        res.send(user);
-    }
-    else{
-        res.status(404).send(user);
-    }
+
+const User = sequelize.define("user", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  age: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  }
 });
-  
-app.listen(3000, function(){
+
+User.create({
+  name: "Tom",
+  age: 35
+}).then(res=>{
+  console.log(res);
+}).catch(err=>console.log(err));
+
+sequelize.sync().then(()=>{
+  app.listen(3000, function(){
     console.log("Сервер ожидает подключения...");
+  });
+}).catch(err=>console.log(err));
+
+app.get("/", function(req, res){
+  User.findAll({raw:true}).then(users=>{
+    console.log(users);
+  }).catch(err=>console.log(err));
+});
+
+app.post("/api/users", urlencodedParser, function (req, res) {
+         
+  if(!req.body) return res.sendStatus(400);
+       
+  const username = req.body.name;
+  const userage = req.body.age;
+  User.create({ name: username, age: userage}).then(()=>{
+    res.redirect("/");
+  }).catch(err=>console.log(err));
+});
+
+
+app.post("api/users/:id", function(req, res){  
+  const userid = req.params.id;
+  User.destroy({where: {id: userid} }).then(() => {
+    res.redirect("/");
+  }).catch(err=>console.log(err));
 });
