@@ -1,8 +1,0 @@
-CREATE TABLE users
-(
-    Id SERIAL PRIMARY KEY,
-    FirstName VARCHAR(30) NOT NULL,
-    Age INTEGER DEFAULT 0
-    
-);
-INSERT INTO users VALUES (1, 'jone', 18)
