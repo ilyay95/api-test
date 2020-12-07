@@ -1,62 +1,49 @@
 const express = require("express");
-const Sequelize = require("sequelize");
-var app = express();
-
 const bodyParser = require("body-parser");
+const User = require('./models/index');
+
+var app = express();
 
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
-const sequelize = new Sequelize("postgres", "postgres", "1234567", {
-  dialect: "postgres"
-     });
+app.listen(3000, () => {
+   console.log(`Express server listening on port 3000...`);
+});
+
  
-// определяем модель User
-const User = sequelize.define("user", {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false
-    },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    age: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    }
-  });     
-
-  // синхронизация с бд, после успшной синхронизации запускаем сервер
-sequelize.sync().then(()=>{
-    app.listen(3000, function(){
-      console.log("Сервер ожидает подключения...");
-    });
-  }).catch(err=>console.log(err));
-
-  // получение данных
-app.get("/", function(req, res){
+app.get("/users", function(req, res){
     User.findAll({raw:true}).then(users=>{
-        console.log(users);
+        res.send(users);
       }).catch(err=>console.log(err));
 });
 
-// добавление данных
-app.post("/create", urlencodedParser, function (req, res) {
-         
-         
+
+app.post("/create", urlencodedParser, function (req, res) {  
     const username = req.body.name;
     const userage = req.body.age;
+
     User.create({ name: username, age: userage}).then(()=>{
-        console.log(res);
+      res.send();
     }).catch(err=>console.log(err));
 });
 
-// удаление данных
+app.post("/create/tom", urlencodedParser, function (req, res) {
+    User.create({
+        name: "Tom",
+        age: 35
+      }).then(res=>{
+        res.send();
+      }).catch(err=>console.log(err));
+});
+
+
 app.post("/delete/:id", function(req, res){  
+
     const userid = req.params.id;
+
     User.destroy({where: {id: userid} }).then(() => {
-        console.log(res);
+      res.send();
     }).catch(err=>console.log(err));
   });
+
+  module.exports.app = app;
