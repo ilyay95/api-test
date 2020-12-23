@@ -9,14 +9,14 @@
   "test": {
     "username": "postgres",
     "password": 1234567,
-    "database": "database_test",
+    "database": "postgres",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
     "password": 1234567,
-    "database": "database_production",
+    "database": "postgres",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
