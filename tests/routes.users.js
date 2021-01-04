@@ -6,25 +6,42 @@ const app = require('../app');
 const User = require('../models').User
 
 describe('GET /api/users', () => {
-    it('return all users', async () => {
-        await supertest(app)
+    it.only('return all users', async () => {
+        const testUser = {
+            user: {
+                firstName: 'testName',
+                age: '33'
+            }
+        };
+        const newUsers = await User.create(testUser.user);
+
+        const res = await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
+
+        const userById = await User.findByPk(res.body.user.id);
+
+        assert.deepStrictEqual(newUsers.firstName, userById.firstName, 'return correct user');
     });
 });
 
 describe('POST /api/users', () => {
     it('create one user', async () => {
-        const res = supertest(app)
-            .post('/api/users')
-            .send({
+        const testUser = {
+            user: {
                 firstName: 'Name',
                 age: 30
-            })
+            }
+        };
+
+        const res = await supertest(app)
+            .post('/api/users')
+            .send(testUser)
             .expect(httpStatus.OK);
 
-        // const userById = await User.findByPk(res.body.params.id);
-        // assert.deepStrictEqual(testUser.user.firstName, userById.firstName, 'create correct user');
+        const userById = await User.findByPk(res.body.user.id);
+
+        assert.deepStrictEqual(testUser.user.firstName, userById.firstName, 'create correct user');
     });
 });
 
@@ -38,14 +55,20 @@ describe('GET /api/users/:id', () => {
         };
         const newUsers = await User.create(testUser.user);
 
-        await supertest(app)
+        const res = await supertest(app)
             .get(`/api/users/${newUsers.id}`)
             .expect(httpStatus.OK);
+
+        const userById = await User.findByPk(res.body.user.id);
+
+        assert.deepStrictEqual(testUser.user.firstName, userById.firstName, 'return correct user');
     });
 
     it('should return validation error for invalid id', async () => {
+        const invalidId = 2.5;
+
         await supertest(app)
-            .put('/api/users/2.5')
+            .put(`/api/users/${invalidId}`)
             .send({ user: {} })
             .expect(httpStatus.NOT_FOUND);
     });

@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
 
     try {
         const user = await User.create({ firstName, age });
+
         res.send({ user });
     } catch (error) {
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ error });

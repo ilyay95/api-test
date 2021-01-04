@@ -4,20 +4,23 @@
     "password": 1234567,
     "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "port": 3000
   },
   "test": {
     "username": "postgres",
     "password": 1234567,
     "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "port": 4000
   },
   "production": {
     "username": "postgres",
     "password": 1234567,
     "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "port": 5000
   }
 }
