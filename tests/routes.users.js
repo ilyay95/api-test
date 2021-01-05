@@ -6,7 +6,7 @@ const app = require('../app');
 const User = require('../models').User
 
 describe('GET /api/users', () => {
-    it.only('return all users', async () => {
+    it('return all users', async () => {
         const res = await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
