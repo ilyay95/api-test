@@ -7,11 +7,19 @@ const User = require('../models').User
 
 describe('GET /api/users', () => {
     it('return all users', async () => {
+        const testUser = {
+            user: {
+                firstName: 'testName1',
+                age: '25'
+            }
+        };
+        await User.create(testUser.user);
+
         const res = await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
 
-        if (res.body.user) {
+        if (res.body.user.id) {
             assert(res.body.user, 'return correct user')
         }
     });
