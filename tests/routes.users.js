@@ -14,14 +14,16 @@ describe('GET /api/users', () => {
             }
         };
         await User.create(testUser.user);
+        const userArr = await User.findAll({ raw: true });
+        const userBeforeLength = userArr.length;
 
         const res = await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
 
-        if (res.body.user.id) {
-            assert(res.body.user, 'return correct user')
-        }
+        const userAfterLength = res.body.user.length;
+
+        assert.strictEqual(userBeforeLength, userAfterLength, 'return all users');
     });
 });
 
@@ -33,27 +35,30 @@ describe('POST /api/users', () => {
                 age: 30
             }
         };
+        const userArr = await User.findAll({ raw: true });
+        const userBeforeLength = userArr.length;
 
         const res = await supertest(app)
             .post('/api/users')
             .send(testUser)
             .expect(httpStatus.OK);
 
-        const userById = await User.findByPk(res.body.user.id);
+        const userArrAfter = await User.findAll({ raw: true });
+        const userAfterLength = userArrAfter.length;
 
-        assert.deepStrictEqual(testUser.user.firstName, userById.firstName, 'create correct user');
+        assert.strictEqual(userBeforeLength + 1, userAfterLength, 'create correct user');
     });
 });
 
 describe('GET /api/users/:id', () => {
     it('should return single user', async () => {
-        const testUser = {
+        const newUser = {
             user: {
                 firstName: 'testName',
                 age: '25'
             }
         };
-        const newUsers = await User.create(testUser.user);
+        const newUsers = await User.create(newUser.user);
 
         const res = await supertest(app)
             .get(`/api/users/${newUsers.id}`)
@@ -61,7 +66,7 @@ describe('GET /api/users/:id', () => {
 
         const userById = await User.findByPk(res.body.user.id);
 
-        assert.deepStrictEqual(testUser.user.firstName, userById.firstName, 'return correct user');
+        assert.deepStrictEqual(newUser.user.firstName, userById.firstName, 'return correct user');
     });
 
     it('should return validation error for invalid id', async () => {
