@@ -3,9 +3,9 @@ const User = require('../models').User
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const user = await User.findAll({ raw: true });
+    const users = await User.findAll({ raw: true });
 
-    res.send({ user });
+    res.send({ users });
 });
 
 router.get('/:id', async (req, res) => {

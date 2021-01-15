@@ -14,20 +14,21 @@ describe('GET /api/users', () => {
                 age: '25'
             }
         };
+
         await User.create(testUser.user);
-        const userArr = await User.findAll({ raw: true });
-        const collection = collect(userArr);
-        const userBeforeLength = collection.count();
+        const usersArr = await User.findAll({ raw: true });
+        const collection = collect(usersArr);
+        const usersBeforeLength = collection.count();
 
         const res = await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
 
-        const userAfter = res.body.user;
-        const collectionAfter = collect(userAfter);
-        const userAfterLength = collectionAfter.count();
+        const usersAfter = res.body.user;
+        const collectionAfter = collect(usersAfter);
+        const usersAfterLength = collectionAfter.count();
 
-        assert.strictEqual(userBeforeLength, userAfterLength, 'return all users');
+        assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
 });
 
@@ -39,40 +40,40 @@ describe('POST /api/users', () => {
                 age: 30
             }
         };
-        const userArr = await User.findAll({ raw: true });
-        const collection = collect(userArr);
-        const userBeforeLength = collection.count();
+        const usersArr = await User.findAll({ raw: true });
+        const collection = collect(usersArr);
+        const usersBeforeLength = collection.count();
 
         await supertest(app)
             .post('/api/users')
             .send(testUser)
             .expect(httpStatus.OK);
 
-        const userArrAfter = await User.findAll({ raw: true });
-        const collectionAfter = collect(userArrAfter);
-        const userAfterLength = collectionAfter.count();
+        const usersArrAfter = await User.findAll({ raw: true });
+        const collectionAfter = collect(usersArrAfter);
+        const usersAfterLength = collectionAfter.count();
 
-        assert.strictEqual(userBeforeLength + 1, userAfterLength, 'create correct user');
+        assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
     });
 });
 
 describe('GET /api/users/:id', () => {
     it('should return single user', async () => {
-        const newUser = {
+        const testUser = {
             user: {
                 firstName: 'testName',
                 age: '25'
             }
         };
-        const newUsers = await User.create(newUser.user);
+        const newUser = await User.create(testUser.user);
 
         const res = await supertest(app)
-            .get(`/api/users/${newUsers.id}`)
+            .get(`/api/users/${newUser.id}`)
             .expect(httpStatus.OK);
 
-        const userById = await User.findByPk(res.body.user.id);
+        const userById = res.body.user.firstName;
 
-        assert.deepStrictEqual(newUser.user.firstName, userById.firstName, 'return correct user');
+        assert.deepStrictEqual(testUser.user.firstName, userById, 'return correct user');
     });
 
     it('should return validation error for invalid id', async () => {
