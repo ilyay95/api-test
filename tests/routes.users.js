@@ -66,7 +66,7 @@ describe('GET /api/users/:id', () => {
         assert.deepStrictEqual(testUser.user.firstName, firstName, 'return correct user');
     });
 
-    it.only('should return validation error for invalid id', async () => {
+    it('should return validation error for invalid id', async () => {
         const invalidId = 2.5;
         const testUser = {
             user: {
