@@ -12,7 +12,7 @@ router.get('/:id', async (req, res) => {
     const user = await User.findByPk(req.params.id);
 
     if (!user) {
-        res.sendStatus(httpStatus.NOT_FOUND);
+        res.sendStatus(httpStatus.NOT_FOUND)
     }
 
     res.send({ user });

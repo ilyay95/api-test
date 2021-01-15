@@ -76,9 +76,9 @@ describe('GET /api/users/:id', () => {
         };
 
         await supertest(app)
-            .put(`/api/users/${invalidId}`)
+            .get(`/api/users/${invalidId}`)
             .send(testUser)
-            .expect(httpStatus.NOT_FOUND);
+            .expect(httpStatus.BAD_REQUEST);
     });
 });
 
