@@ -3,7 +3,8 @@ const httpStatus = require('http-status-codes');
 const supertest = require('supertest');
 const models = require('../models')
 const app = require('../app');
-const User = require('../models').User
+const User = require('../models').User;
+const collect = require('collect.js');
 
 describe('GET /api/users', () => {
     it('return all users', async () => {
@@ -15,13 +16,16 @@ describe('GET /api/users', () => {
         };
         await User.create(testUser.user);
         const userArr = await User.findAll({ raw: true });
-        const userBeforeLength = userArr.length;
+        const collection = collect(userArr);
+        const userBeforeLength = collection.count();
 
         const res = await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
 
-        const userAfterLength = res.body.user.length;
+        const userAfter = res.body.user;
+        const collectionAfter = collect(userAfter);
+        const userAfterLength = collectionAfter.count();
 
         assert.strictEqual(userBeforeLength, userAfterLength, 'return all users');
     });
@@ -36,15 +40,17 @@ describe('POST /api/users', () => {
             }
         };
         const userArr = await User.findAll({ raw: true });
-        const userBeforeLength = userArr.length;
+        const collection = collect(userArr);
+        const userBeforeLength = collection.count();
 
-        const res = await supertest(app)
+        await supertest(app)
             .post('/api/users')
             .send(testUser)
             .expect(httpStatus.OK);
 
         const userArrAfter = await User.findAll({ raw: true });
-        const userAfterLength = userArrAfter.length;
+        const collectionAfter = collect(userArrAfter);
+        const userAfterLength = collectionAfter.count();
 
         assert.strictEqual(userBeforeLength + 1, userAfterLength, 'create correct user');
     });
