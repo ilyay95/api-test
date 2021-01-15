@@ -61,17 +61,23 @@ describe('GET /api/users/:id', () => {
             .get(`/api/users/${newUser.id}`)
             .expect(httpStatus.OK);
 
-        const userById = res.body.user.firstName;
+        const firstName = res.body.user.firstName;
 
-        assert.deepStrictEqual(testUser.user.firstName, userById, 'return correct user');
+        assert.deepStrictEqual(testUser.user.firstName, firstName, 'return correct user');
     });
 
-    it('should return validation error for invalid id', async () => {
+    it.only('should return validation error for invalid id', async () => {
         const invalidId = 2.5;
+        const testUser = {
+            user: {
+                firstName: 'Name',
+                age: 30
+            }
+        };
 
         await supertest(app)
             .put(`/api/users/${invalidId}`)
-            .send({ user: {} })
+            .send(testUser)
             .expect(httpStatus.NOT_FOUND);
     });
 });
