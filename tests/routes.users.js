@@ -4,7 +4,6 @@ const supertest = require('supertest');
 const models = require('../models')
 const app = require('../app');
 const User = require('../models').User;
-const collect = require('collect.js');
 
 describe('GET /api/users', () => {
     it('return all users', async () => {
@@ -16,17 +15,13 @@ describe('GET /api/users', () => {
         };
 
         await User.create(testUser.user);
-        const usersArr = await User.findAll({ raw: true });
-        const collection = collect(usersArr);
-        const usersBeforeLength = collection.count();
+        const usersBeforeLength = await User.count();
 
-        const res = await supertest(app)
+        await supertest(app)
             .get('/api/users')
             .expect(httpStatus.OK);
 
-        const usersAfter = res.body.user;
-        const collectionAfter = collect(usersAfter);
-        const usersAfterLength = collectionAfter.count();
+        const usersAfterLength = await User.count();
 
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
@@ -40,18 +35,13 @@ describe('POST /api/users', () => {
                 age: 30
             }
         };
-        const usersArr = await User.findAll({ raw: true });
-        const collection = collect(usersArr);
-        const usersBeforeLength = collection.count();
+        const usersBeforeLength = await User.count();
 
         await supertest(app)
             .post('/api/users')
             .send(testUser)
             .expect(httpStatus.OK);
-
-        const usersArrAfter = await User.findAll({ raw: true });
-        const collectionAfter = collect(usersArrAfter);
-        const usersAfterLength = collectionAfter.count();
+        const usersAfterLength = await User.count();
 
         assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
     });
