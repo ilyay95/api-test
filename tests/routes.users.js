@@ -63,7 +63,7 @@ describe('GET /api/users/:id', () => {
 
         const firstName = res.body.user.firstName;
 
-        assert.deepStrictEqual(testUser.user.firstName, firstName, 'return correct user');
+        assert.deepStrictEqual(newUser.firstName, firstName, 'return correct user');
     });
 
     it('should return validation error for invalid id', async () => {
