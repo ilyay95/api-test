@@ -68,16 +68,9 @@ describe('GET /api/users/:id', () => {
 
     it('should return validation error for invalid id', async () => {
         const invalidId = 2.5;
-        const testUser = {
-            user: {
-                firstName: 'Name',
-                age: 30
-            }
-        };
 
         await supertest(app)
             .get(`/api/users/${invalidId}`)
-            .send(testUser)
             .expect(httpStatus.BAD_REQUEST);
     });
 });
