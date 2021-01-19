@@ -4,8 +4,11 @@ const supertest = require('supertest');
 const models = require('../models')
 const app = require('../app');
 const User = require('../models').User;
+const usersValidation = require('../routes/validations/users');
+const { validate } = require('express-validation')
 
-describe('GET /api/users', () => {
+
+describe('GET /api/users', validate(usersValidation.get), () => {
     it('return all users', async () => {
         const testUser = {
             user: {
@@ -27,7 +30,7 @@ describe('GET /api/users', () => {
     });
 });
 
-describe('POST /api/users', () => {
+describe('POST /api/users', validate(usersValidation.post), () => {
     it('create one user', async () => {
         const testUser = {
             user: {
@@ -45,9 +48,23 @@ describe('POST /api/users', () => {
 
         assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
     });
+    it('should return validation error for invalid userName', async () => {
+        const incorrectUser = {
+            user: {
+                firstname: 'rg',
+                age: '15',
+            }
+        };
+
+        await supertest(app)
+            .post('/users')
+            .send(incorrectUser)
+            .expect(httpStatus.BAD_REQUEST);
+    });
+
 });
 
-describe('GET /api/users/:id', () => {
+describe('GET /api/users/:id', validate(usersValidation.get), () => {
     it('should return single user', async () => {
         const testUser = {
             user: {
@@ -75,7 +92,7 @@ describe('GET /api/users/:id', () => {
     });
 });
 
-describe('DELETE /api/users/delete/:id', () => {
+describe('DELETE /api/users/delete/:id', validate(usersValidation.delete), () => {
     it('should delete single user', async () => {
         const testUser = {
             user: {
@@ -93,5 +110,10 @@ describe('DELETE /api/users/delete/:id', () => {
         const userById = await models.User.findByPk(testUser.id);
 
         assert.deepStrictEqual(userById, null, 'delete correct user');
+    });
+    it('return validation error for invalid id', async () => {
+        await supertest(app)
+            .delete('/users/-1')
+            .expect(httpStatus.BAD_REQUEST);
     });
 });
