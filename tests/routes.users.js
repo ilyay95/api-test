@@ -4,11 +4,8 @@ const supertest = require('supertest');
 const models = require('../models')
 const app = require('../app');
 const User = require('../models').User;
-const usersValidation = require('../routes/validations/users');
-const { validate } = require('express-validation')
 
-
-describe('GET /api/users', validate(usersValidation.get), () => {
+describe('GET /api/users', () => {
     it('return all users', async () => {
         const testUser = {
             user: {
@@ -30,7 +27,7 @@ describe('GET /api/users', validate(usersValidation.get), () => {
     });
 });
 
-describe('POST /api/users', validate(usersValidation.post), () => {
+describe('POST /api/users', () => {
     it('create one user', async () => {
         const testUser = {
             user: {
@@ -51,7 +48,7 @@ describe('POST /api/users', validate(usersValidation.post), () => {
     it('should return validation error for invalid userName', async () => {
         const incorrectUser = {
             user: {
-                firstname: 'rg',
+                firstname: 'r',
                 age: '15',
             }
         };
@@ -64,7 +61,7 @@ describe('POST /api/users', validate(usersValidation.post), () => {
 
 });
 
-describe('GET /api/users/:id', validate(usersValidation.get), () => {
+describe('GET /api/users/:id', () => {
     it('should return single user', async () => {
         const testUser = {
             user: {
@@ -92,7 +89,7 @@ describe('GET /api/users/:id', validate(usersValidation.get), () => {
     });
 });
 
-describe('DELETE /api/users/delete/:id', validate(usersValidation.delete), () => {
+describe('DELETE /api/users/delete/:id', () => {
     it('should delete single user', async () => {
         const testUser = {
             user: {
