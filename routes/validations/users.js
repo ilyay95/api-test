@@ -13,7 +13,6 @@ const validations = {
             user: Joi.object({
                 id: Joi.number()
                     .integer()
-
                     .positive(),
                 firstName: Joi.string()
                     .trim()
