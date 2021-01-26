@@ -6,15 +6,18 @@ const validations = {
             id: Joi.number()
                 .integer()
                 .positive()
-                .required()
         }),
     },
     post: {
         body: Joi.object({
             user: Joi.object({
+                id: Joi.number()
+                    .integer()
+
+                    .positive(),
                 firstName: Joi.string()
                     .trim()
-                    .min(5)
+                    .min(3)
                     .max(50)
                     .required(),
                 age: Joi.number()

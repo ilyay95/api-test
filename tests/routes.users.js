@@ -48,13 +48,13 @@ describe('POST /api/users', () => {
     it('should return validation error for invalid userName', async () => {
         const incorrectUser = {
             user: {
-                firstname: 'r',
-                age: '15',
+                firstName: 'N',
+                age: 15,
             }
         };
 
         await supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(incorrectUser)
             .expect(httpStatus.BAD_REQUEST);
     });
@@ -83,9 +83,10 @@ describe('GET /api/users/:id', () => {
     it('should return validation error for invalid id', async () => {
         const invalidId = 2.5;
 
-        await supertest(app)
+        const error = await supertest(app)
             .get(`/api/users/${invalidId}`)
             .expect(httpStatus.BAD_REQUEST);
+        console.log(error);
     });
 });
 
@@ -102,15 +103,17 @@ describe('DELETE /api/users/delete/:id', () => {
 
         await supertest(app)
             .delete(`/api/users/delete/${newUser.id}`)
-            .expect(httpStatus.NOT_FOUND);
+            .expect(httpStatus.NO_CONTENT);
 
         const userById = await models.User.findByPk(testUser.id);
 
         assert.deepStrictEqual(userById, null, 'delete correct user');
     });
     it('return validation error for invalid id', async () => {
+        const invalidID = -1;
+
         await supertest(app)
-            .delete('/users/-1')
+            .delete(`/api/users/delete/${invalidID}`)
             .expect(httpStatus.BAD_REQUEST);
     });
 });

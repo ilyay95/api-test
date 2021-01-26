@@ -1,6 +1,6 @@
 const config = require('config');
 const express = require('express');
-const httpStatus = require('http-status');
+
 const router = require('./routes/index');
 const { ValidationError } = require('express-validation')
 

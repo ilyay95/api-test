@@ -2,7 +2,8 @@ const express = require('express');
 const User = require('../models').User
 const router = express.Router();
 const usersValidation = require('../routes/validations/users');
-const { validate } = require('express-validation')
+const { validate } = require('express-validation');
+
 
 router.get('/', validate(usersValidation.get), async (req, res) => {
     const users = await User.findAll({ raw: true });
@@ -32,7 +33,7 @@ router.post('/', validate(usersValidation.post), async (req, res) => {
     }
 });
 
-router.post('/delete/:id', validate(usersValidation.delete), async (req, res) => {
+router.delete('/delete/:id', validate(usersValidation.delete), async (req, res) => {
     const user = await User.getById(req.params.id);
 
     if (!user) {
