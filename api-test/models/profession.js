@@ -1,21 +1,17 @@
-  'use strict';
+'use strict';
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Profession extends Model {
     static associate(models) {
-    User.belongsTo(models.profession);
-  }
+      Profession.hasMany(models.user)
+    }
   };
-  User.init({
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+  Profession.init({
+    profession: {
+      allowNull: false,
+      type: DataTypes.STRING
     },
     createdAt: {
       allowNull: false,
@@ -27,10 +23,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       type: DataTypes.DATE
     }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
-
-  return User;
+  },
+    {
+      sequelize,
+      modelName: 'Profession',
+    },
+  );
+  return Profession;
 };
