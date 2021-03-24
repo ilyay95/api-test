@@ -11,7 +11,7 @@ import { MessageService } from './message.service';
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  private usersUrl = 'api/users';  
+  private usersUrl = 'http://localhost:3000/api/users';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -33,7 +33,7 @@ export class UserService {
     const url = `${this.usersUrl}/?id=${id}`;
     return this.http.get<User[]>(url)
       .pipe(
-        map(users => users[0]), 
+        map(users => users[0]),
         tap(h => {
           const outcome = h ? `fetched` : `did not find`;
           this.log(`${outcome} user id=${id}`);
@@ -56,21 +56,21 @@ export class UserService {
     }
     return this.http.get<User[]>(`${this.usersUrl}/?name=${term}`).pipe(
       tap(x => x.length ?
-         this.log(`found users matching "${term}"`) :
-         this.log(`no users matching "${term}"`)),
+        this.log(`found users matching "${term}"`) :
+        this.log(`no users matching "${term}"`)),
       catchError(this.handleError<User[]>('searchUsers', []))
     );
   }
 
-  addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.usersUrl, user, this.httpOptions).pipe(
+  addUser(data: User): Observable<User> {
+    return this.http.post<User>(this.usersUrl, data['users'], this.httpOptions).pipe(
       tap((newUser: User) => this.log(`added user w/ id=${newUser.id}`)),
       catchError(this.handleError<User>('addUser'))
     );
   }
 
-  deleteUser(user: User | number): Observable<User> {
-    const id = typeof user === 'number' ? user : user.id;
+  deleteUser(data: User | number): Observable<User> {
+    const id = typeof data['users'] === 'number' ? data['users'] : data['users'].id;
     const url = `${this.usersUrl}/${id}`;
 
     return this.http.delete<User>(url, this.httpOptions).pipe(
@@ -79,9 +79,9 @@ export class UserService {
     );
   }
 
-  updateUser(user: User): Observable<any> {
-    return this.http.put(this.usersUrl, user, this.httpOptions).pipe(
-      tap(_ => this.log(`updated user id=${user.id}`)),
+  updateUser(data: User): Observable<any> {
+    return this.http.put(this.usersUrl, data['users'], this.httpOptions).pipe(
+      tap(_ => this.log(`updated user id=${data['users'].id}`)),
       catchError(this.handleError<any>('updateUser'))
     );
   }
@@ -89,7 +89,7 @@ export class UserService {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
-      console.error(error); 
+      console.error(error);
 
       this.log(`${operation} failed: ${error.message}`);
 

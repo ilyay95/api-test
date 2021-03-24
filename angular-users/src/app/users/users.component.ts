@@ -19,15 +19,15 @@ export class UsersComponent implements OnInit {
 
   getUsers(): void {
     this.userService.getUsers()
-    .subscribe(users => this.users = users);
+      .subscribe((data) => (this.users = data['users']));
   }
 
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    this.userService.addUser({ name } as User)
-      .subscribe(user => {
-        this.users.push(user);
+    this.userService.addUser({ firstName: name } as User)
+      .subscribe(data => {
+        this.users.push(data['users']);
       });
   }
 

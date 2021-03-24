@@ -7,3 +7,4 @@ router.get('/profesion', async (req, res) => {
 
     res.send({ profession });
 });
+
