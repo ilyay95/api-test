@@ -1,9 +1,11 @@
 const config = require('config');
 const express = require('express');
 const router = require('./routes/index');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
 app.use('/api', router);
 
 app.listen(config.httpPort, () => {

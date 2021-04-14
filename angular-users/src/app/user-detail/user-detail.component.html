@@ -1,0 +1,22 @@
+<div *ngIf="user">
+    <h2>{{user.name | uppercase}} Details</h2>
+    <div><span>id: </span>{{user.id}}</div>
+    <div>
+        <label>name:
+            <input [(ngModel)]="user.name" placeholder="name" />
+        </label>
+    </div>
+    <div><span>age: </span>{{user.age}}</div>
+    <div>
+        <label>profession:
+            <select name="profession" [(ngModel)]="user.profession">
+                <option disabled>Выберите профессию</option>
+                <option value="teacher">teacher</option>
+                <option value="worker">worker</option>
+                <option value="hunter">hunter</option>
+            </select>
+        </label>
+    </div>
+    <button (click)="goBack()">go back</button>
+    <button (click)="save()">save</button>
+</div>
