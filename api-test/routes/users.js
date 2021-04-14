@@ -1,6 +1,9 @@
 const express = require('express');
 const User = require('../models').User
 const router = express.Router();
+const usersValidation = require('../routes/validations/users');
+const { validate } = require('express-validation');
+
 
 router.get('/', async (req, res) => {
     const users = await User.findAll({ raw: true });
@@ -8,7 +11,7 @@ router.get('/', async (req, res) => {
     res.send({ users });
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', validate(usersValidation.get), async (req, res) => {
     const user = await User.findByPk(req.params.id);
 
     if (!user) {
@@ -18,7 +21,7 @@ router.get('/:id', async (req, res) => {
     res.send({ user });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', validate(usersValidation.post), async (req, res) => {
     const { firstName, age } = req.body.user;
 
     try {
@@ -30,7 +33,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post('/delete/:id', async (req, res) => {
+router.delete('/:id', validate(usersValidation.delete), async (req, res) => {
     const user = await User.getById(req.params.id);
 
     if (!user) {
