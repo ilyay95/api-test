@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Professions extends Model {
     static associate(models) {
-      Profession.hasMany(models.user)
+      Profession.hasMany(models.user);
     }
   };
   Professions.init({

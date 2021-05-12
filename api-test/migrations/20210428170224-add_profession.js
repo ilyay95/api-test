@@ -15,9 +15,7 @@ module.exports = {
       ]
     )
   },
-
   down: async (queryInterface, Sequelize) => {
-
     return Professions.destroy({
       where: {
         profession: [

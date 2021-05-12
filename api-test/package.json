@@ -10,7 +10,6 @@
     "supertest": "^2.0.1"
   },
   "dependencies": {
-    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "config": "^3.3.3",
     "express": "^4.17.1",
@@ -18,7 +17,6 @@
     "express-validator": "^6.10.0",
     "http-status-codes": "^2.1.4",
     "pg": "^8.5.1",
-    "pg-promise": "^10.10.1",
     "sequelize": "^6.3.5"
   }
 }
