@@ -1,12 +1,11 @@
-<h2>My Users</h2>
+<h2 class="display-6 text-center">My Users</h2>
 
 <div>
     <label>User name:
-        <input #userName />
+        <input class="form-control" #userName />
     </label>
-    <button (click)="add(userName.value); userName.value=''">
-        add
-    </button>
+    <button type="button" class="btn button btn-light" (click)="add(userName.value); userName.value=''">add</button>
+
 </div>
 
 <ul class="users">
@@ -14,6 +13,6 @@
         <a routerLink="/detail/{{user.id}}">
             <span class="badge">{{user.id}}</span> {{user.name}} {{user.profession}}
         </a>
-        <button class="delete" title="delete user" (click)="delete(user)">x</button>
+        <button class="btn btn-light delete" title="delete user" (click)="delete(user)">x</button>
     </li>
 </ul>

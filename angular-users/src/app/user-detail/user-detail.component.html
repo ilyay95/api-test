@@ -9,7 +9,7 @@
     <div><span>age: </span>{{user.age}}</div>
     <div>
         <label>profession:
-            <select name="profession" [(ngModel)]="user.professionId">
+            <select name="profession" [(ngModel)]="user.profession">
                 <option disabled>Выберите профессию</option>
                 <option value="teacher">teacher</option>
                 <option value="worker">worker</option>
@@ -17,6 +17,6 @@
             </select>
         </label>
     </div>
-    <button (click)="goBack()">go back</button>
-    <button (click)="save()">save</button>
+    <button class="btn btn-light" (click)="goBack()">go back</button>
+    <button class="btn btn-light" (click)="save()">save</button>
 </div>
