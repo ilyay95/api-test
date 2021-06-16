@@ -9,7 +9,7 @@
   "testing": {
     "username": "postgres",
     "password": 1234567,
-    "database": "postgres-testing",
+    "database": "postgres",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

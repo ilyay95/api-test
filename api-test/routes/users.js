@@ -1,48 +1,86 @@
 const express = require('express');
-const User = require('../models').User
+const { StatusCodes } = require('http-status-codes');
+const { validate } = require('express-validation');
+const asyncHandler = require('express-async-handler');
+
+const User = require('../models').users;
 const router = express.Router();
 const usersValidation = require('../routes/validations/users');
-const { validate } = require('express-validation');
 
+router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) => {
+    const firstName = req.query.firstName;
+    let users;
 
-router.get('/', async (req, res) => {
-    const users = await User.findAll({ raw: true });
+    if (firstName) {
+        users = await User.findAll({ where: { firstName } });
+    } else {
+        users = await User.findAll({ raw: true });
+    }
 
     res.send({ users });
-});
+}));
 
-router.get('/:id', validate(usersValidation.get), async (req, res) => {
+router.get('/:id', validate(usersValidation.get), asyncHandler(async (req, res) => {
     const user = await User.findByPk(req.params.id);
 
     if (!user) {
-        res.sendStatus(httpStatus.NOT_FOUND);
+        res.sendStatus(StatusCodes.NOT_FOUND);
     }
 
     res.send({ user });
-});
+}));
 
-router.post('/', validate(usersValidation.post), async (req, res) => {
+router.get('/', validate(usersValidation.get), asyncHandler(async (req, res) => {
+    const user = await User.findOne({ where: { firstName: req.query.firstName } });
+
+    if (!user) {
+        res.sendStatus(StatusCodes.NOT_FOUND);
+    }
+
+    res.send({ user });
+}));
+
+
+router.post('/', validate(usersValidation.post), asyncHandler(async (req, res) => {
     const { firstName, age } = req.body.user;
 
     try {
-        const user = await User.create({ firstName, age });
+        const user = await User.create({ firstName, age, professionId: 1 });
 
         res.send({ user });
     } catch (error) {
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ error });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
     }
-});
+}));
 
-router.delete('/:id', validate(usersValidation.delete), async (req, res) => {
-    const user = await User.getById(req.params.id);
+router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) => {
+    const user = await User.findByPk(req.params.id);
 
     if (!user) {
-        res.sendStatus(httpStatus.NOT_FOUND);
+        res.sendStatus(StatusCodes.NOT_FOUND);
     }
 
-    await User.remove(req.params.id);
+    const { firstName, age } = req.body.user;
 
-    res.sendStatus(httpStatus.NO_CONTENT);
-});
+    try {
+        await user.update({ firstName, age });
+
+        res.send({ user });
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
+    }
+}));
+
+router.delete('/:id', validate(usersValidation.delete), asyncHandler(async (req, res) => {
+    const user = await User.findByPk(req.params.id);
+
+    if (!user) {
+        res.sendStatus(StatusCodes.NOT_FOUND);
+    }
+
+    await user.destroy();
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+}));
 
 module.exports = router;

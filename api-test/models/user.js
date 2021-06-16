@@ -5,9 +5,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      User.belongsTo(models.profession);
+      Users.belongsTo(models.professions);
     }
-  };
+  }
   Users.init({
     firstName: {
       type: DataTypes.STRING,

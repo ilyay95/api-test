@@ -19,18 +19,20 @@ module.exports = {
       professionId: {
         allowNull: false,
         references: {
-          model: "Professions",
-          key: "id"
+          model: 'professions',
+          key: 'id'
         },
         type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
