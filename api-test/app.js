@@ -1,4 +1,4 @@
-const config = require('config');
+const config = require('./config');
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
 const { ValidationError } = require('express-validation');

@@ -1,14 +1,15 @@
 {
   "development": {
     "username": "postgres",
-    "password": 1234567,
+    "password": "1234567",
     "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "httpPort": 3001
   },
   "testing": {
     "username": "postgres",
-    "password": 1234567,
+    "password": "1234567",
     "database": "postgres",
     "host": "127.0.0.1",
     "dialect": "postgres"

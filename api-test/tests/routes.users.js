@@ -24,48 +24,47 @@ describe('GET /api/users', () => {
 
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
-     it('return all users', async () => {
+    it('return users by name', async () => {
         const testUser = {
-                firstName: 'name',
-                age: '11',
-                professionId: '1'
+            firstName: 'name',
+            age: '11',
+            professionId: '1'
         };
 
         const user = await User.create(testUser);
         const firstName = user.firstName
-        const users = await User.findAll({ where: { firstName } }).length;
+        const users = await User.findAll({ where: { firstName } });
         const num = users.length;
-       
+
         const res = await supertest(app)
             .get(`/api/users?firstName=${user.firstName}`)
             .expect(StatusCodes.OK);
         const usersAfterLength = res.body.users;
         const numAft = usersAfterLength.length;
-    
-        assert.strictEqual(num, numAft , 'return all users');
-    });
-     it.only('return all users', async () => {
-        const testUser = {
-                firstName: '1111',
-                age: '11',
-                professionId: '1'
-        };
 
+        assert.strictEqual(num, numAft, 'return all users');
+    });
+    it('validation error for invalid firstName', async () => {
+        const testUser = {
+            firstName: 'b',
+            age: '11',
+            professionId: '1'
+        };
         const user = await User.create(testUser);
-    
-             await supertest(app)
+
+        await supertest(app)
             .get(`/api/users?firstName=${user.firstName}`)
             .expect(StatusCodes.BAD_REQUEST);
-        
     });
 });
 
 describe('PUT /api/users/:id', () => {
-      it('should return validation error for invalid id', async () => {
-         const testUser = {
+    it('should return validation error for invalid id', async () => {
+        const testUser = {
             user: {
                 firstName: 'Name',
-                age: 30
+                age: 30,
+                professionId: 2
             }
         };
 
@@ -73,6 +72,26 @@ describe('PUT /api/users/:id', () => {
             .put('/api/users/15,5')
             .send(testUser)
             .expect(StatusCodes.BAD_REQUEST);
+    });
+    it.only('returning a changed user', async () => {
+        let testUser = {user:{
+            firstName: 'Name',
+            age: 30,
+            professionId: 3
+        }};
+        const user = await User.create(testUser.user);
+        testUser = {user:{
+            firstName: 'Nama',
+            age: 33,
+            professionId: 2
+        }};
+        await supertest(app)
+            .put(`/api/users/${user.id}`)
+            .send(testUser)
+            .expect(StatusCodes.OK);
+        const userAfter = await User.findByPk(user.id);
+        console.log(userAfter.firstName, userAfter.age);
+        
     });
 });
 
@@ -92,7 +111,7 @@ describe('POST /api/users', () => {
             .expect(StatusCodes.OK);
         const usersAfterLength = await User.count();
 
-        assert.strictEqual(usersBeforeLength +1, usersAfterLength, 'create correct user');
+        assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
     });
     it('should return validation error for invalid userName', async () => {
         const incorrectUser = {
@@ -106,7 +125,7 @@ describe('POST /api/users', () => {
             .post('/api/users')
             .send(incorrectUser)
             .expect(StatusCodes.BAD_REQUEST);
-    }); 
+    });
 });
 
 describe('GET /api/users/:id', () => {
@@ -116,14 +135,14 @@ describe('GET /api/users/:id', () => {
             age: '25',
             professionId: '3'
         };
-        
+
         const newUser = await User.create(testUser);
         console.log(newUser.id, "string");
         const res = await supertest(app)
             .get(`/api/users/${newUser.id}`)
             .expect(StatusCodes.OK);
 
-        const firstName = res.body.users;
+        const firstName = res.body.user.firstName;
 
         assert.deepStrictEqual(newUser.firstName, firstName, 'return correct user');
     });

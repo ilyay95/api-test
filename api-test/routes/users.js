@@ -67,7 +67,7 @@ router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) 
 
         res.send({ user });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
+        res.status(StatusCodes.NO_CONTENT).send({ error });
     }
 }));
 
