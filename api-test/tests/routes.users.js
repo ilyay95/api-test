@@ -73,25 +73,27 @@ describe('PUT /api/users/:id', () => {
             .send(testUser)
             .expect(StatusCodes.BAD_REQUEST);
     });
-    it.only('returning a changed user', async () => {
-        let testUser = {user:{
+    it('returning a changed user', async () => {
+        let testUser = {
             firstName: 'Name',
             age: 30,
-            professionId: 3
-        }};
+            professionId: 3 
+        };
         const user = await User.create(testUser.user);
-        testUser = {user:{
+        
+        testUser = {
             firstName: 'Nama',
             age: 33,
             professionId: 2
-        }};
+        };
         await supertest(app)
             .put(`/api/users/${user.id}`)
             .send(testUser)
             .expect(StatusCodes.OK);
         const userAfter = await User.findByPk(user.id);
-        console.log(userAfter.firstName, userAfter.age);
-        
+
+        assert.strictEqual(testUser.firstName, userAfter.firstName, 'return correct user');
+        assert.strictEqual(testUser.age, userAfter.age, 'return correct user');
     });
 });
 
@@ -146,7 +148,6 @@ describe('GET /api/users/:id', () => {
 
         assert.deepStrictEqual(newUser.firstName, firstName, 'return correct user');
     });
-
     it('should return validation error for invalid id', async () => {
         const invalidId = 2.5;
 
