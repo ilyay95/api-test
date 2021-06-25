@@ -7,7 +7,7 @@ const validations = {
                 .trim()
                 .min(3)
                 .max(50)
-                
+
         })
     },
     get: {
@@ -16,7 +16,7 @@ const validations = {
                 .integer()
                 .positive()
                 .required()
-         }),
+        }),
     },
     post: {
         body: Joi.object({
@@ -53,8 +53,11 @@ const validations = {
                     .min(1)
                     .max(100)
                     .required()
+                    .positive(),
+                professionId: Joi.number()
+                    .min(1)
+                    .max(5)
                     .positive()
-
             })
         })
     },

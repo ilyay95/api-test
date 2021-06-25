@@ -12,12 +12,12 @@
                 <input class="form-control" id="age" required [(ngModel)]="user.age" name="age" />
             </div>
 
-            <button (click)="createUser()" class="mt-4 btn btn-success">Create</button>
+            <button (click)="createUser()" class="mt-4 btn btn-sm btn-danger">Create</button>
         </div>
 
         <div *ngIf="submitted">
             <h3>You successfully created a user!</h3>
-            <button class="btn btn-success" (click)="newUser()">New..</button>
+            <button class="mt-4 btn btn-sm btn-danger" (click)="newUser()">New..</button>
         </div>
     </div>
 </div>

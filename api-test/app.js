@@ -1,4 +1,4 @@
-const config = require('./config');
+const config = require('config');
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
 const { ValidationError } = require('express-validation');
@@ -16,7 +16,7 @@ app.use(function (err, req, res) {
     if (err instanceof ValidationError) {
         return res.status(err.statusCode).send(err)
     }
-
+    
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err)
 })
 

@@ -16,7 +16,6 @@ router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) 
     } else {
         users = await User.findAll({ raw: true });
     }
-
     res.send({ users });
 }));
 
@@ -26,7 +25,6 @@ router.get('/:id', validate(usersValidation.get), asyncHandler(async (req, res) 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-
     res.send({ user });
 }));
 
@@ -36,7 +34,6 @@ router.get('/', validate(usersValidation.get), asyncHandler(async (req, res) => 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-
     res.send({ user });
 }));
 
@@ -59,7 +56,6 @@ router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-
     const { firstName, age } = req.body.user;
 
     try {
@@ -79,7 +75,6 @@ router.delete('/:id', validate(usersValidation.delete), asyncHandler(async (req,
     }
 
     await user.destroy();
-
     res.sendStatus(StatusCodes.NO_CONTENT);
 }));
 

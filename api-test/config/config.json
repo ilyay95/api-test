@@ -4,13 +4,12 @@
     "password": "1234567",
     "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "postgres",
-    "httpPort": 3001
+    "dialect": "postgres"
   },
   "testing": {
     "username": "postgres",
     "password": "1234567",
-    "database": "postgres",
+    "database": "postgres-testing",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

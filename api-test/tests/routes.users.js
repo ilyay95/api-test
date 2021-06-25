@@ -75,16 +75,20 @@ describe('PUT /api/users/:id', () => {
     });
     it('returning a changed user', async () => {
         let testUser = {
-            firstName: 'Name',
-            age: 30,
-            professionId: 3 
+            user: {
+                firstName: 'Name',
+                age: 30,
+                professionId: 3
+            }
         };
         const user = await User.create(testUser.user);
-        
+
         testUser = {
-            firstName: 'Nama',
-            age: 33,
-            professionId: 2
+            user: {
+                firstName: 'numer',
+                age: 33,
+                professionId: 3
+            }
         };
         await supertest(app)
             .put(`/api/users/${user.id}`)
@@ -92,8 +96,8 @@ describe('PUT /api/users/:id', () => {
             .expect(StatusCodes.OK);
         const userAfter = await User.findByPk(user.id);
 
-        assert.strictEqual(testUser.firstName, userAfter.firstName, 'return correct user');
-        assert.strictEqual(testUser.age, userAfter.age, 'return correct user');
+        assert.strictEqual(testUser.user.firstName, userAfter.firstName, 'return correct user');
+        assert.strictEqual(testUser.user.age, userAfter.age, 'return correct user');
     });
 });
 
@@ -127,6 +131,12 @@ describe('POST /api/users', () => {
             .post('/api/users')
             .send(incorrectUser)
             .expect(StatusCodes.BAD_REQUEST);
+    });
+    it.only('should return internal server error', async () => {
+        await supertest(app)
+            .post('/api/users')
+            .send({})
+            .expect(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });
 
