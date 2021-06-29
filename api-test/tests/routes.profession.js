@@ -2,25 +2,25 @@ const assert = require('assert');
 const { StatusCodes } = require('http-status-codes');
 const supertest = require('supertest');
 const app = require('../app');
-const Profesion = require('../models').professions;
+const profession = require('../models').professions;
 
 describe('GET /api/users/profesion', () => {
     it('return all profesion', async () => {
         const testProfesion = {
             profession: {
-                profesion: 'testProfession',
+                profession: 'testProfession',
             }
         };
 
-        await Profesion.create(testProfesion.profesion);
-        const professionBeforeLength = await Profesion.count();
+        await profession.create(testProfesion.profession);
+        const professionBeforeLength = await profession.count();
 
         await supertest(app)
-            .get('/api/users/profesion')
-            .expect({ StatusCodes }.OK);
+            .get('/api/users/profession')
+            .expect(StatusCodes.OK);
 
-        const professionAfterLength = await Profesion.count();
+        const professionAfterLength = await profession.count();
 
-        assert.strictEqual(professionBeforeLength, professionAfterLength, 'return all profesion');
+        assert.strictEqual(professionBeforeLength, professionAfterLength, 'return all profession');
     });
 });

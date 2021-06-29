@@ -66,7 +66,6 @@ const validations = {
             id: Joi.number()
                 .integer()
                 .positive()
-                .required()
         })
     }
 };

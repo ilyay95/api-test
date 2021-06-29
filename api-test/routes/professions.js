@@ -1,9 +1,9 @@
 const express = require('express');
-const Profession = require('../models').professions;
+const profession = require('../models').professions;
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const professions = await Profession.findAll({ raw: true });
+    const professions = await profession.findAll({ raw: true });
 
     res.send({ professions });
 });

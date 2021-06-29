@@ -24,6 +24,7 @@ describe('GET /api/users', () => {
 
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
+
     it('return users by name', async () => {
         const testUser = {
             firstName: 'name',
@@ -32,18 +33,19 @@ describe('GET /api/users', () => {
         };
 
         const user = await User.create(testUser);
-        const firstName = user.firstName
+        const firstName = user.firstName;
         const users = await User.findAll({ where: { firstName } });
-        const num = users.length;
+        const usersBeforeLength = users.length;
 
         const res = await supertest(app)
             .get(`/api/users?firstName=${user.firstName}`)
             .expect(StatusCodes.OK);
-        const usersAfterLength = res.body.users;
-        const numAft = usersAfterLength.length;
+        const usersAfter = res.body.users;
+        const usersAfterLength = usersAfter.length;
 
-        assert.strictEqual(num, numAft, 'return all users');
+        assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
+
     it('validation error for invalid firstName', async () => {
         const testUser = {
             firstName: 'b',
@@ -73,7 +75,9 @@ describe('PUT /api/users/:id', () => {
             .send(testUser)
             .expect(StatusCodes.BAD_REQUEST);
     });
+
     it('returning a changed user', async () => {
+
         let testUser = {
             user: {
                 firstName: 'Name',
@@ -96,8 +100,8 @@ describe('PUT /api/users/:id', () => {
             .expect(StatusCodes.OK);
         const userAfter = await User.findByPk(user.id);
 
-        assert.strictEqual(testUser.user.firstName, userAfter.firstName, 'return correct user');
-        assert.strictEqual(testUser.user.age, userAfter.age, 'return correct user');
+        assert.strictEqual(testUser.user.firstName, userAfter.firstName, 'return correct name');
+        assert.strictEqual(testUser.user.age, userAfter.age, 'return correct age');
     });
 });
 
@@ -119,6 +123,7 @@ describe('POST /api/users', () => {
 
         assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
     });
+
     it('should return validation error for invalid userName', async () => {
         const incorrectUser = {
             user: {
@@ -132,7 +137,8 @@ describe('POST /api/users', () => {
             .send(incorrectUser)
             .expect(StatusCodes.BAD_REQUEST);
     });
-    it.only('should return internal server error', async () => {
+
+    it('should return internal server error from for empty object', async () => {
         await supertest(app)
             .post('/api/users')
             .send({})
@@ -149,15 +155,18 @@ describe('GET /api/users/:id', () => {
         };
 
         const newUser = await User.create(testUser);
-        console.log(newUser.id, "string");
+
         const res = await supertest(app)
             .get(`/api/users/${newUser.id}`)
             .expect(StatusCodes.OK);
 
         const firstName = res.body.user.firstName;
+        const id = res.body.user.id;
 
-        assert.deepStrictEqual(newUser.firstName, firstName, 'return correct user');
+        assert.deepStrictEqual(newUser.firstName, firstName, 'return correct name');
+        assert.deepStrictEqual(newUser.id, id, 'rerutn correct id')
     });
+
     it('should return validation error for invalid id', async () => {
         const invalidId = 2.5;
 
@@ -187,6 +196,7 @@ describe('DELETE /api/users/:id', () => {
 
         assert.deepStrictEqual(userById, null, 'delete correct user');
     });
+
     it('return validation error for invalid id', async () => {
         const invalidID = 'ffff';
 
