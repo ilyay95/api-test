@@ -78,4 +78,9 @@ router.delete('/:id', validate(usersValidation.delete), asyncHandler(async (req,
     res.sendStatus(StatusCodes.NO_CONTENT);
 }));
 
+router.delete('/', asyncHandler(async (req, res) => {
+    await User.destroy({ where: {} });
+    res.sendStatus(StatusCodes.NO_CONTENT);
+}));
+
 module.exports = router;
