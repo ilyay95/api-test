@@ -1,7 +1,17 @@
-<h1>{{title}}</h1>
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/users">Users</a>
-</nav>
-<router-outlet></router-outlet>
-<app-messages></app-messages>
+<div>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a href="#" class="ml-3 navbar-brand">List</a>
+    <div class=" navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="users" class="nav-link">Users</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="create" class="nav-link">Create</a>
+      </li>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>

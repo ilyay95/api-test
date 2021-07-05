@@ -3,19 +3,15 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Profession extends Model {
     static associate(models) {
-      User.belongsTo(models.professions);
+      Profession.hasMany(models.users);
     }
   }
-  User.init({
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+  Profession.init({
+    name: {
+      allowNull: false,
+      type: DataTypes.STRING
     },
     createdAt: {
       allowNull: false,
@@ -27,10 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       type: DataTypes.DATE
     }
-  }, {
-    sequelize,
-    modelName: 'users',
-  });
+  },
+    {
+      sequelize,
+      modelName: 'professions',
+    },
+  );
 
-  return User;
+  return Profession;
 };
