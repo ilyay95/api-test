@@ -10,7 +10,7 @@ module.exports = {
       },
       firstName: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING(256)
       },
       age: {
         allowNull: false,

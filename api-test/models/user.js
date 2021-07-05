@@ -3,12 +3,12 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Users extends Model {
+  class User extends Model {
     static associate(models) {
-      Users.belongsTo(models.professions);
+      User.belongsTo(models.professions);
     }
   }
-  Users.init({
+  User.init({
     firstName: {
       type: DataTypes.STRING,
       allowNull: false
@@ -32,5 +32,5 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'users',
   });
 
-  return Users;
+  return User;
 };

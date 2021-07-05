@@ -3,13 +3,13 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Professions extends Model {
+  class Profession extends Model {
     static associate(models) {
-      Professions.hasMany(models.users);
+      Profession.hasMany(models.users);
     }
   }
-  Professions.init({
-    profession: {
+  Profession.init({
+    name: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -30,5 +30,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  return Professions;
+  return Profession;
 };
