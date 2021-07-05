@@ -5,7 +5,7 @@ const app = require('../app');
 const profession = require('../models').professions;
 
 describe('GET /api/users', () => {
-    it.only('return all profesion', async () => {
+    it('return all profesion', async () => {
         const testProfesion = {
             profession: {
                 profession: 'testProfession',
