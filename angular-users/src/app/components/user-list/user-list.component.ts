@@ -12,6 +12,7 @@ export class UserListComponent implements OnInit {
   currentUser = null;
   currentIndex = -1;
   firstName = '';
+  message = 'Are you sure to delete all users';
 
   constructor(private userService: UserService) { }
 
@@ -65,4 +66,11 @@ export class UserListComponent implements OnInit {
           console.log(error);
         });
   }
+
+  confirmMethod(): void {
+    if(confirm(this.message)) {
+      this.deleteAllUsers();
+    }
+  }
+
 }

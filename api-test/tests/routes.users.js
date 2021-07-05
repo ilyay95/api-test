@@ -205,3 +205,25 @@ describe('DELETE /api/users/:id', () => {
             .expect(StatusCodes.BAD_REQUEST);
     });
 });
+
+describe('DELETE /api/users/', () => {
+    it('should delete all users', async () => {
+        const testUser = {
+            user: {
+                firstName: 'testName',
+                age: '25',
+                professionId: '1'
+            }
+        };
+        await User.create(testUser.user);
+
+        await supertest(app)
+            .delete(`/api/users/`)
+            .expect(StatusCodes.NO_CONTENT);
+
+        const userById = await User.findByPk(testUser.id);
+
+        assert.deepStrictEqual(userById, null, 'delete correct user');
+    });
+
+});
