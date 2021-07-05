@@ -8,7 +8,7 @@ describe('GET /api/users', () => {
     it('return all profesion', async () => {
         const testProfesion = {
             profession: {
-                profession: 'testProfession',
+                name: 'testProfession',
             }
         };
 
