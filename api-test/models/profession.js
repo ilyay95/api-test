@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Professions.init({
-    profession: {
+    name: {
       allowNull: false,
       type: DataTypes.STRING
     },

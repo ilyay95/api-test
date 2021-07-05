@@ -207,7 +207,7 @@ describe('DELETE /api/users/:id', () => {
 });
 
 describe('DELETE /api/users/', () => {
-    it.only('should delete all users', async () => {
+    it('should delete all users', async () => {
         const testUser = {
             user: {
                 firstName: 'testName',
