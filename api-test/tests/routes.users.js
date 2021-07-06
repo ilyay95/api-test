@@ -208,22 +208,30 @@ describe('DELETE /api/users/:id', () => {
 
 describe('DELETE /api/users/', () => {
     it('should delete all users', async () => {
-        const testUser = {
-            user: {
+        const testUsers = {
+            firstUser: {
                 firstName: 'testName',
                 age: '25',
                 professionId: '1'
-            }
+            },
+            secondUser: {
+                firstName: 'test',
+                age: '22',
+                professionId: '1'
+            },
         };
-        await User.create(testUser.user);
+        const firstUser = await User.create(testUsers.firstUser);
+        const secondUser = await User.create(testUsers.secondUser);
 
         await supertest(app)
             .delete(`/api/users/`)
             .expect(StatusCodes.NO_CONTENT);
+            
+        const firstUserId = await User.findByPk(firstUser.id);
+        const secondUserId = await User.findByPk(secondUser.id);
 
-        const userById = await User.findByPk(testUser.id);
-
-        assert.deepStrictEqual(userById, null, 'delete correct user');
+        assert.deepStrictEqual(firstUserId, null, 'delete first user');
+        assert.deepStrictEqual(secondUserId, null, 'delete second user');
     });
-
 });
+    
