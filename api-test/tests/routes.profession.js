@@ -4,11 +4,11 @@ const supertest = require('supertest');
 const app = require('../app');
 const profession = require('../models').professions;
 
-describe('GET /api/users/profesion', () => {
+describe('GET /api/users', () => {
     it('return all profesion', async () => {
         const testProfesion = {
             profession: {
-                profession: 'testProfession',
+                name: 'testProfession',
             }
         };
 
@@ -16,7 +16,7 @@ describe('GET /api/users/profesion', () => {
         const professionBeforeLength = await profession.count();
 
         await supertest(app)
-            .get('/api/users/profession')
+            .get('/api/users')
             .expect(StatusCodes.OK);
 
         const professionAfterLength = await profession.count();
