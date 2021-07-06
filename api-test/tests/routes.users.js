@@ -227,11 +227,11 @@ describe('DELETE /api/users/', () => {
             .delete(`/api/users/`)
             .expect(StatusCodes.NO_CONTENT);
             
-            const firstUserId = await User.findByPk(firstUser.id);
-            const secondUserId = await User.findByPk(secondUser.id);
+        const firstUserId = await User.findByPk(firstUser.id);
+        const secondUserId = await User.findByPk(secondUser.id);
 
-            assert.deepStrictEqual(firstUserId, null, 'delete first user');
-            assert.deepStrictEqual(secondUserId, null, 'delete second user');
+        assert.deepStrictEqual(firstUserId, null, 'delete first user');
+        assert.deepStrictEqual(secondUserId, null, 'delete second user');
     });
 });
     
