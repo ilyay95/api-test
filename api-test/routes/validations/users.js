@@ -30,8 +30,17 @@ const validations = {
                     .min(1)
                     .max(100)
                     .required()
-                    .positive()
-
+                    .positive(),
+                professionId: Joi.number()
+                    .min(0)
+                    .max(5)
+                    .required()
+                    .positive(),
+                logo: Joi.string()
+                    .trim()
+                    .min(3)
+                    .max(1000000)
+                    .required()
             })
         })
     },

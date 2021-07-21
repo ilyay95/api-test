@@ -16,6 +16,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      logo: {
+        allowNull: false,
+        type: Sequelize.STRING(10485760)
+      },
       professionId: {
         allowNull: false,
         references: {

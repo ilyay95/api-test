@@ -39,10 +39,10 @@ router.get('/', validate(usersValidation.get), asyncHandler(async (req, res) => 
 
 
 router.post('/', validate(usersValidation.post), asyncHandler(async (req, res) => {
-    const { firstName, age, professionId } = req.body.user;
+    const { firstName, age, professionId, logo  } = req.body.user;
 
     try {
-        const user = await User.create({ firstName, age, professionId });
+        const user = await User.create({ firstName, age, professionId, logo });
 
         res.send({ user });
     } catch (error) {
@@ -56,10 +56,10 @@ router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-    const { firstName, age, professionId} = req.body.user;
+    const { firstName, age, professionId } = req.body.user;
 
     try {
-        await user.update({ firstName, age, professionId});
+        await user.update({ firstName, age, professionId });
 
         res.send({ user });
     } catch (error) {
