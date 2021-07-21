@@ -110,7 +110,9 @@ describe('POST /api/users', () => {
         const testUser = {
             user: {
                 firstName: 'Name',
-                age: 30
+                age: 30,
+                professionId: 4,
+                logo: 'https://c.wallhere.com/photos/86/61/skull_demon_Latin_horned_pentagram_Satanism_devils_satanic-5549.jpg!d'
             }
         };
         const usersBeforeLength = await User.count();
