@@ -56,10 +56,10 @@ router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-    const { firstName, age, professionId } = req.body.user;
+    const { firstName, age, professionId, logo } = req.body.user;
 
     try {
-        await user.update({ firstName, age, professionId });
+        await user.update({ firstName, age, professionId, logo });
 
         res.send({ user });
     } catch (error) {

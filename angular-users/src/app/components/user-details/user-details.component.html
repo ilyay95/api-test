@@ -2,8 +2,8 @@
     <div *ngIf="currentUser" class="edit-form">
         <h4>User {{currentUser.firstName}}</h4>
         <form>
-            <div class="form-group">
-                <img [src]="currentUser.logo" height="100" width="100" class="rounded-circle">
+            <div class="form-group" >
+                <img [src]="currentUser.logo" height="100" width="100" class="rounded-circle" (click)="setCurrentProduct()">
             </div>
             <div class="form-group">
                 <label for="title">Name</label>
@@ -20,20 +20,21 @@
                     <option *ngFor="let p of professions" [ngValue]="p.id">{{p.name}}</option>
                 </select>
             </div>
+            <div *ngIf="currentProduct">
+                <div class="form-group">
+                    <label for="logo">Logo</label>
+                    <input class="form-control" id="logo" required [(ngModel)]="currentUser.logo" name="logo" />
+                </div>
+            </div>
         </form>
 
-        <button class="mt-4 btn btn-sm btn-danger" (click)="confirmMethod()">
+        <button class="mt-4 btn btn-sm btn-danger" (click)="confirmMethod()" [routerLink]="['/users']">
             Delete
         </button>
 
-        <button type="submit" class="mt-4 mn-4 btn btn-sm btn-success" (click)="updateUser()">
+        <button type="submit" class="mt-4 mn-4 btn btn-sm btn-success" (click)="updateUser()" [routerLink]="['/users']">
             Update
         </button>
         <p></p>
-    </div>
-
-    <div *ngIf="!currentUser">
-        <br />
-        <p>This user is not accessible</p>
     </div>
 </div>
