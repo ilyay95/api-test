@@ -12,7 +12,8 @@ export class UserDetailsComponent implements OnInit {
   currentUser = null;
   message = '';
   professions: any;
-  message1 = 'Are you sure to delete user';
+  message1 = 'Are you sure you want to delete the user';
+  currentProduct = null;
 
   constructor(
     private userService: UserService,
@@ -50,12 +51,18 @@ export class UserDetailsComponent implements OnInit {
       });
   }
 
+  setCurrentProduct(): void {
+    this.currentProduct = !this.currentProduct ;
+   
+  }
+
   updateUser(): void {
     const data = {
       user: {
         firstName: this.currentUser.firstName,
         age: this.currentUser.age,
-        professionId: this.currentUser.professionId-1
+        professionId: this.currentUser.professionId-1,
+        logo: this.currentUser.logo
       }
     };
 

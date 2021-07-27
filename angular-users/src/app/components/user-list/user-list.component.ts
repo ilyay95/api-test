@@ -17,7 +17,7 @@ export class UserListComponent implements OnInit {
   currentProfessions = null ;
   currentIndexProfessions = -1;
   firstName = '';
-  message = 'Are you sure to delete all users';
+  message = 'Are you sure you want to delete all users';
 
   constructor(
     private userService: UserService,

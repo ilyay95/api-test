@@ -66,7 +66,12 @@ const validations = {
                 professionId: Joi.number()
                     .min(1)
                     .max(5)
-                    .positive()
+                    .positive(),
+                logo: Joi.string()
+                    .trim()
+                    .min(3)
+                    .max(1000000)
+                    .required()
             })
         })
     },
