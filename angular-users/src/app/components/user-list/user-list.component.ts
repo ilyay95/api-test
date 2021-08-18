@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ProfessionService } from 'src/app/services/profession.service';
+import { GroupService } from 'src/app/services/group.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,6 +13,7 @@ export class UserListComponent implements OnInit {
 
   users: any;
   professions: any;
+  groups:any;
   currentUser = null;
   currentIndex = -1;
   currentProfessions = null ;
@@ -22,11 +24,13 @@ export class UserListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private professionService: ProfessionService,
+    private groupService : GroupService,
     private router: Router) { }
 
   ngOnInit(): void {
     this.readUsers();
     this.readProfessions();
+    this.readGroups();
   }
 
   readUsers(): void {
@@ -53,6 +57,17 @@ export class UserListComponent implements OnInit {
       });
   }
   
+  readGroups(): void {
+    this.groupService.readAllGroup()
+    .subscribe(
+      data => {
+        this.groups = data["groups"];
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      });
+  } 
   refresh(): void {
     this.readUsers();
     this.currentUser = null;

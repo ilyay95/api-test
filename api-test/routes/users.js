@@ -6,15 +6,23 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models').users;
 const router = express.Router();
 const usersValidation = require('../routes/validations/users');
+ const Groups = require('../models').groups;
 
 router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) => {
     const firstName = req.query.firstName;
     let users;
 
     if (firstName) {
-        users = await User.findAll({ where: { firstName } });
+        users = await User.findAll({ where: { firstName } })
     } else {
-        users = await User.findAll({ raw: true });
+        users = await User.findAll({  include: [{
+            model: Groups,
+            as: 'groups',
+            required: false,
+            through: {
+                attributes: ["groupId"]
+            }
+        }]});
     }
     res.send({ users });
 }));
