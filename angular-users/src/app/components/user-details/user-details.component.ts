@@ -12,7 +12,7 @@ export class UserDetailsComponent implements OnInit {
   currentUser = null;
   message = '';
   professions: any;
-  message1 = 'Are you sure to delete user';
+  delete_message = 'Are you sure you want to delete the user';
 
   constructor(
     private userService: UserService,
@@ -42,7 +42,7 @@ export class UserDetailsComponent implements OnInit {
     this.professionService.readAllProfession()
     .subscribe(
       data => {
-        this.professions = data["professions"];
+        this.professions = data['professions'];
         console.log(data);
       },
       error => {
@@ -55,7 +55,7 @@ export class UserDetailsComponent implements OnInit {
       user: {
         firstName: this.currentUser.firstName,
         age: this.currentUser.age,
-        professionId: this.currentUser.professionId-1
+        professionId: this.currentUser.professionId
       }
     };
 
@@ -71,7 +71,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   confirmMethod(): void {
-    if(confirm(this.message1)) {
+    if(confirm(this.delete_message)) {
       this.deleteUser();
     }
   }
