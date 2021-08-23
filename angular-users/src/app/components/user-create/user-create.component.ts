@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
+import { ProfessionService } from 'src/app/services/profession.service';
 
 @Component({
   selector: 'app-user-create',
@@ -10,19 +11,38 @@ export class UserCreateComponent implements OnInit {
   user = {
     firstName: '',
     age: '',
+    professionId: ''
   };
   submitted = false;
+  professions: any;
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private professionService: ProfessionService,
+  ) { }
 
   ngOnInit(): void {
+    this.readProfessions()
+  }
+
+  readProfessions(): void {
+    this.professionService.readAllProfession()
+    .subscribe(
+      data => {
+        this.professions = data['professions'];
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   createUser(): void {
     const data = {
       user: {
         firstName: this.user.firstName,
-        age: this.user.age
+        age: this.user.age,
+        professionId: this.user.professionId
       }
     };
 
@@ -34,15 +54,6 @@ export class UserCreateComponent implements OnInit {
         },
         error => {
           console.log(error);
-        });
+        });   
   }
-
-  newUser(): void {
-    this.submitted = false;
-    this.user = {
-      firstName: '',
-      age: ''
-    };
-  }
-
 }
