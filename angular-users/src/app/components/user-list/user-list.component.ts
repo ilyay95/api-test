@@ -14,10 +14,17 @@ export class UserListComponent implements OnInit {
   professions: any;
   currentUser = null;
   currentIndex = -1;
+<<<<<<< HEAD
   currentProfessions = null;
   currentIndexProfessions = -1;
   firstName = '';
   deleteMessage = 'Are you sure you want to delete the user';
+=======
+  currentProfessions = null ;
+  currentIndexProfessions = -1;
+  firstName = '';
+  message = 'Are you sure you want to delete all users';
+>>>>>>> 2a5de65ddfba90a5bae4dcdac2877e4e1367d8b0
 
   constructor(
     private userService: UserService,
@@ -45,7 +52,11 @@ export class UserListComponent implements OnInit {
     this.professionService.readAllProfession()
     .subscribe(
       data => {
+<<<<<<< HEAD
         this.professions = data['professions'];
+=======
+        this.professions = data["professions"];
+>>>>>>> 2a5de65ddfba90a5bae4dcdac2877e4e1367d8b0
         console.log(data);
       },
       error => {
@@ -57,6 +68,12 @@ export class UserListComponent implements OnInit {
     this.readUsers();
     this.currentUser = null;
     this.currentIndex = -1;
+  }
+
+  setCurrentUser(user, index): void {
+    this.currentUser = user;
+    this.currentIndex = index;
+    this.router.navigate([`/users/this.currentUser.id `]);
   }
 
   deleteAllUsers(): void {
