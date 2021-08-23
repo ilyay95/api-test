@@ -30,7 +30,7 @@ export class UserCreateComponent implements OnInit {
     this.professionService.readAllProfession()
     .subscribe(
       data => {
-        this.professions = data["professions"];
+        this.professions = data['professions'];
         console.log(data);
       },
       error => {

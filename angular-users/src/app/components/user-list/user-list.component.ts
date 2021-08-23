@@ -16,10 +16,10 @@ export class UserListComponent implements OnInit {
   groups:any;
   currentUser = null;
   currentIndex = -1;
-  currentProfessions = null ;
+  currentProfessions = null;
   currentIndexProfessions = -1;
   firstName = '';
-  message = 'Are you sure you want to delete all users';
+  deleteMessage = 'Are you sure you want to delete the user';
 
   constructor(
     private userService: UserService,
@@ -37,7 +37,7 @@ export class UserListComponent implements OnInit {
     this.userService.readAll()
       .subscribe(
         data => {
-          this.users = data["users"];
+          this.users = data['users'];
           console.log(data);
         },
         error => {
@@ -49,7 +49,7 @@ export class UserListComponent implements OnInit {
     this.professionService.readAllProfession()
     .subscribe(
       data => {
-        this.professions = data["professions"];
+        this.professions = data['professions'];
         console.log(data);
       },
       error => {
@@ -73,13 +73,7 @@ export class UserListComponent implements OnInit {
     this.currentUser = null;
     this.currentIndex = -1;
   }
-
-  setCurrentUser(user, index): void {
-    this.currentUser = user;
-    this.currentIndex = index;
-    this.router.navigate([`/users/this.currentUser.id `]);
-  }
-
+  
   deleteAllUsers(): void {
     this.userService.deleteAll()
       .subscribe(
@@ -105,7 +99,7 @@ export class UserListComponent implements OnInit {
   }
 
   confirmMethod(): void {
-    if(confirm(this.message)) {
+    if(confirm(this.deleteMessage)) {
       this.deleteAllUsers();
     }
   }
