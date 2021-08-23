@@ -2,9 +2,6 @@
     <div *ngIf="currentUser" class="edit-form">
         <h4>User {{currentUser.firstName}}</h4>
         <form>
-            <div class="form-group" >
-                <img [src]="currentUser.logo" height="100" width="100" class="rounded-circle" (click)="setCurrentProduct()">
-            </div>
             <div class="form-group">
                 <img [src]="currentUser.logo" height="100" width="100" class="rounded-circle" (click)="setCurrentProduct()">
             </div>
