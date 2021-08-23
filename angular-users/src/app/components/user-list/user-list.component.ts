@@ -17,7 +17,7 @@ export class UserListComponent implements OnInit {
   currentProfessions = null;
   currentIndexProfessions = -1;
   firstName = '';
-  delete_message = 'Are you sure you want to delete the user';
+  deleteMessage = 'Are you sure you want to delete the user';
 
   constructor(
     private userService: UserService,
@@ -59,12 +59,6 @@ export class UserListComponent implements OnInit {
     this.currentIndex = -1;
   }
 
-  setCurrentUser(user, index): void {
-    this.currentUser = user;
-    this.currentIndex = index;
-    this.router.navigate(['/users/this.currentUser.id']);
-  }
-
   deleteAllUsers(): void {
     this.userService.deleteAll()
       .subscribe(
@@ -90,7 +84,7 @@ export class UserListComponent implements OnInit {
   }
 
   confirmMethod(): void {
-    if(confirm(this.delete_message)) {
+    if(confirm(this.deleteMessage)) {
       this.deleteAllUsers();
     }
   }
