@@ -11,7 +11,7 @@ export class UserCreateComponent implements OnInit {
   user = {
     firstName: '',
     age: '',
-    professionId:'',
+    professionId: '',
     logo: ''
   };
   submitted = false;
