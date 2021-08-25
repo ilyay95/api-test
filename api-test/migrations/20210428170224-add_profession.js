@@ -13,7 +13,8 @@ module.exports = {
     )
   },
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('professions', [
+    return queryInterface.bulkDelete('professions', 
+      [
         { name: 'Actor' },
         { name: 'Butcher' },
         { name: 'Doctor' },

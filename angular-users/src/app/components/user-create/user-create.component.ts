@@ -39,12 +39,11 @@ export class UserCreateComponent implements OnInit {
   }
 
   createUser(): void {
-   
     const data = {
       user: {
         firstName: this.user.firstName,
         age: this.user.age,
-        professionId: +this.user.professionId-1,
+        professionId: this.user.professionId,
         logo: this.user.logo
       }
     };

@@ -23,7 +23,7 @@
                 <tr *ngFor="let user of users; let i = index" [class.active]="i == currentIndex"
                 routerLink="/users/{{ user.id }}">
                 <td><img [src]="user.logo" height="50" width="50" class="rounded-circle"></td>
-                <td class=".ml-3 align-middle" >{{ user.firstName }}</td>
+                <td class=".ml-3 align-middle">{{ user.firstName }}</td>
                 <td scope="row" class="align-middle">{{ user.age }}</td>
                 <td scope="row" class="align-middle">{{ professions[user.professionId].name }}</td>
             </tr>

@@ -13,7 +13,8 @@ module.exports = {
     )
   },
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('groups', [
+    return queryInterface.bulkDelete('groups', 
+      [
         { name: 'group1' },
         { name: 'group2' },
         { name: 'group3' },

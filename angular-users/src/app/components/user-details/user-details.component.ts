@@ -52,8 +52,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   setCurrentProduct(): void {
-    this.currentProduct = !this.currentProduct ;
-   
+    this.currentProduct = !this.currentProduct;
   }
 
   updateUser(): void {

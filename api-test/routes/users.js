@@ -15,7 +15,7 @@ router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) 
     if (firstName) {
         users = await User.findAll({ where: { firstName } })
     } else {
-        users = await User.findAll({  include: [{
+        users = await User.findAll({ include: [{
             model: Groups,
             as: 'groups',
             required: false,
