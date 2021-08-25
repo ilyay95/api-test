@@ -8,6 +8,7 @@ module.exports = {
               type: DataTypes.INTEGER
           },
           userId: {
+              allowNull: false,
               references: {
                   model: 'users',
                   key: 'id'
@@ -15,6 +16,7 @@ module.exports = {
               type: DataTypes.INTEGER,
           },
           groupId: {
+              allowNull: false,
               references: {
                   model: 'group',
                   key: 'id'

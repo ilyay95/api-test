@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   connection.init({
-    id:{ 
+    id: { 
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
