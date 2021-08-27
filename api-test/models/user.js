@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.belongsTo(models.professions);
+      User.belongsToMany(models.groups, { through: 'connection' });
     }
   }
   User.init({
@@ -15,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     age: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    logo: {
+      type: DataTypes.STRING,
       allowNull: false
     },
     createdAt: {

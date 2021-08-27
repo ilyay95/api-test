@@ -11,7 +11,8 @@ export class UserCreateComponent implements OnInit {
   user = {
     firstName: '',
     age: '',
-    professionId: ''
+    professionId: '',
+    logo: ''
   };
   submitted = false;
   professions: any;
@@ -42,7 +43,8 @@ export class UserCreateComponent implements OnInit {
       user: {
         firstName: this.user.firstName,
         age: this.user.age,
-        professionId: this.user.professionId
+        professionId: this.user.professionId,
+        logo: this.user.logo
       }
     };
 

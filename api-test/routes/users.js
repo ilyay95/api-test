@@ -6,13 +6,14 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models').users;
 const router = express.Router();
 const usersValidation = require('../routes/validations/users');
+ const Groups = require('../models').groups;
 
 router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) => {
     const firstName = req.query.firstName;
     let users;
 
     if (firstName) {
-        users = await User.findAll({ where: { firstName } });
+        users = await User.findAll({ where: { firstName } })
     } else {
         users = await User.findAll({ raw: true });
     }
@@ -39,10 +40,10 @@ router.get('/', validate(usersValidation.get), asyncHandler(async (req, res) => 
 
 
 router.post('/', validate(usersValidation.post), asyncHandler(async (req, res) => {
-    const { firstName, age, professionId } = req.body.user;
+    const { firstName, age, professionId, logo  } = req.body.user;
 
     try {
-        const user = await User.create({ firstName, age, professionId });
+        const user = await User.create({ firstName, age, professionId, logo });
 
         res.send({ user });
     } catch (error) {
@@ -56,10 +57,10 @@ router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-    const { firstName, age, professionId} = req.body.user;
+    const { firstName, age, professionId, logo } = req.body.user;
 
     try {
-        await user.update({ firstName, age, professionId});
+        await user.update({ firstName, age, professionId, logo });
 
         res.send({ user });
     } catch (error) {

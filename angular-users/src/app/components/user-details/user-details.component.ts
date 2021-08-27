@@ -12,7 +12,8 @@ export class UserDetailsComponent implements OnInit {
   currentUser = null;
   message = '';
   professions: any;
-  delete_message = 'Are you sure you want to delete the user';
+  deleteMessage = 'Are you sure you want to delete the user';
+  currentProduct = null;
 
   constructor(
     private userService: UserService,
@@ -50,12 +51,17 @@ export class UserDetailsComponent implements OnInit {
       });
   }
 
+  setCurrentProduct(): void {
+    this.currentProduct = !this.currentProduct;
+  }
+
   updateUser(): void {
     const data = {
       user: {
         firstName: this.currentUser.firstName,
         age: this.currentUser.age,
-        professionId: this.currentUser.professionId
+        professionId: this.currentUser.professionId,
+        logo: this.currentUser.logo
       }
     };
 
@@ -71,7 +77,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   confirmMethod(): void {
-    if(confirm(this.delete_message)) {
+    if(confirm(this.deleteMessage)) {
       this.deleteUser();
     }
   }
