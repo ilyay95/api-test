@@ -5,6 +5,8 @@ module.exports = {
     return queryInterface.bulkInsert('connection', 
       [
         { userId: '1', groupId: '2'},
+        { userId: '1', groupId: '1'},
+        { userId: '1', groupId: '3'},
         { userId: '2', groupId: '1'},
         { userId: '3', groupId: '1'},
         { userId: '4', groupId: '2'},
@@ -16,10 +18,12 @@ module.exports = {
     return queryInterface.bulkDelete('connection',
       [
         { userId: '1', groupId: '2'},
+        { userId: '1', groupId: '1'},
+        { userId: '1', groupId: '3'},
         { userId: '2', groupId: '1'},
         { userId: '3', groupId: '1'},
         { userId: '4', groupId: '2'},
-        { userId: '5', groupId: '4'}      
+        { userId: '5', groupId: '4'}       
       ]
     )
   }

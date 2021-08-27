@@ -26,7 +26,7 @@ router.get('/:id', validate(usersValidation.get), asyncHandler(async (req, res) 
         as: 'groups',
         required: false,
         through: {
-            attributes: ["groupId"]
+            attributes: ['groupId']
         }
     }]});
 

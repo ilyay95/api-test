@@ -61,7 +61,7 @@ export class UserListComponent implements OnInit {
     this.groupService.readAllGroup()
     .subscribe(
       data => {
-        this.groups = data["groups"];
+        this.groups = data['groups'];
         console.log(data);
       },
       error => {

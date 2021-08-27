@@ -28,11 +28,9 @@
             </div>
             <div>
                 <div class="form-group">
-                    <label for="logo">Groups</label>
+                    <label for="groups">Groups</label>
                     <ul>
-                        <li>{{currentUser.groups[0].connection.groupId}}</li>
-                        <li>{{currentUser.groups[1].connection.groupId}}</li>
-                        <li>{{currentUser.groups[2].connection.groupId}}</li>
+                        <li *ngFor="let group of currentUser.groups">{{group.connection.groupId}}</li>
                     </ul>
                 </div>
             </div>
