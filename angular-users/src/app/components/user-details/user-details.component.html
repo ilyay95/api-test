@@ -26,6 +26,16 @@
                     <input class="form-control" id="logo" required [(ngModel)]="currentUser.logo" name="logo"/>
                 </div>
             </div>
+            <div>
+                <div class="form-group">
+                    <label for="logo">Groups</label>
+                    <ul>
+                        <li>{{currentUser.groups[0].connection.groupId}}</li>
+                        <li>{{currentUser.groups[1].connection.groupId}}</li>
+                        <li>{{currentUser.groups[2].connection.groupId}}</li>
+                    </ul>
+                </div>
+            </div>
         </form>
 
         <button class="mt-4 btn btn-sm btn-danger" (click)="confirmMethod()" [routerLink]="['/users']">

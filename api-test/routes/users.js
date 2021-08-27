@@ -21,7 +21,14 @@ router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) 
 }));
 
 router.get('/:id', validate(usersValidation.get), asyncHandler(async (req, res) => {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id, {include: [{
+        model: Groups,
+        as: 'groups',
+        required: false,
+        through: {
+            attributes: ["groupId"]
+        }
+    }]});
 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
