@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.belongsTo(models.professions);
-      User.belongsToMany(models.groups, { through: 'connection' });
+      User.belongsToMany(models.groups, { through: 'connections' });
     }
   }
   User.init({

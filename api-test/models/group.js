@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
-      Group.belongsToMany(models.users, { through: 'connection' });
+      Group.belongsToMany(models.users, { through: 'connections' });
     }
   }
   Group.init({
@@ -33,5 +33,5 @@ module.exports = (sequelize, DataTypes) => {
   return Group;
 };
 
- 
+
 

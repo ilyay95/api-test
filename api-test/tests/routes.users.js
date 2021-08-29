@@ -3,6 +3,8 @@ const { StatusCodes } = require('http-status-codes');
 const supertest = require('supertest');
 const app = require('../app');
 const User = require('../models').users;
+const Group = require('../models').groups;
+const Connection = require('../models').connections;
 
 describe('GET /api/users', () => {
     it('return all users', async () => {
@@ -149,14 +151,26 @@ describe('POST /api/users', () => {
 });
 
 describe('GET /api/users/:id', () => {
-    it('should return single user', async () => {
+    it.only('should return single user', async () => {
         const testUser = {
             firstName: 'testName',
             age: '25',
-            professionId: '3'
+            professionId: '3',
+            logo: 'https://c.wallhere.com/photos/86/61/skull_demon_Latin_horned_pentagram_Satanism_devils_satanic-5549.jpg!d'
+        };
+        const testGroup = {
+            name: 'testGroup'
         };
 
         const newUser = await User.create(testUser);
+        const newGroup = await Group.create(testGroup);
+
+        const testConnection = {
+            userId: `${newUser.id}`,
+            groupId: `${newGroup.id}`
+        };
+
+        await Connection.create(testConnection);
 
         const res = await supertest(app)
             .get(`/api/users/${newUser.id}`)
@@ -164,9 +178,11 @@ describe('GET /api/users/:id', () => {
 
         const firstName = res.body.user.firstName;
         const id = res.body.user.id;
+        const group = res.body.user.groups[0].connections.groupId;
 
         assert.deepStrictEqual(newUser.firstName, firstName, 'return correct name');
-        assert.deepStrictEqual(newUser.id, id, 'rerutn correct id')
+        assert.deepStrictEqual(newUser.id, id, 'rerutn correct id');
+        assert.deepStrictEqual(newGroup.id, group, 'rerutn correct groupId');
     });
 
     it('should return validation error for invalid id', async () => {
@@ -228,7 +244,7 @@ describe('DELETE /api/users/', () => {
         await supertest(app)
             .delete(`/api/users/`)
             .expect(StatusCodes.NO_CONTENT);
-            
+
         const firstUserId = await User.findByPk(firstUser.id);
         const secondUserId = await User.findByPk(secondUser.id);
 
@@ -236,4 +252,4 @@ describe('DELETE /api/users/', () => {
         assert.deepStrictEqual(secondUserId, null, 'delete second user');
     });
 });
-    
+
