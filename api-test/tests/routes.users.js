@@ -151,7 +151,7 @@ describe('POST /api/users', () => {
 });
 
 describe('GET /api/users/:id', () => {
-    it.only('should return single user', async () => {
+    it('should return single user', async () => {
         const testUser = {
             firstName: 'testName',
             age: '25',

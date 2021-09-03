@@ -1,0 +1,24 @@
+<form>
+    <div class="row gap-3">
+        <p class="text-center h3">Group {{ currentGroup.name }}</p>
+        <div class="col-sm bg-light bg-light border border-1">
+            <div class="form-group"> 
+                <label for="groups" class="fw-bold">Users not in a group</label>
+                <ul>
+                    <li *ngFor="let user of users; let i = index" [class.active]="i == currentIndex"
+                    routerLink="/users/{{ user.id }}">{{ user.firstName }}</li>
+                </ul>
+            </div>
+        </div>
+                    
+        <div class="col-sm bg-light bg-light border border-1">
+            <div class="form-group">
+                <label for="groups" class="fw-bold">Users in the group</label>
+                <ul>
+                    <li *ngFor="let user of currentGroup.users; let i = index" [class.active]="i == currentIndex">{{ user.firstName }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>       
+</form>
+

@@ -14,7 +14,7 @@ export class UserDetailsComponent implements OnInit {
   professions: any;
   deleteMessage = 'Are you sure you want to delete the user';
   currentProduct = null;
-
+  
   constructor(
     private userService: UserService,
     private professionService: ProfessionService,

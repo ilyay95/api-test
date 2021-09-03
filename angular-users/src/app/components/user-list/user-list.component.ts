@@ -68,11 +68,11 @@ export class UserListComponent implements OnInit {
         console.log(error);
       });
   } 
-  refresh(): void {
-    this.readUsers();
-    this.currentUser = null;
-    this.currentIndex = -1;
-  }
+  // refresh(): void {
+  //   this.readUsers();
+  //   this.currentUser = null;
+  //   this.currentIndex = -1;
+  // }
   
   deleteAllUsers(): void {
     this.userService.deleteAll()

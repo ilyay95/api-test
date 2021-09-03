@@ -6,7 +6,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models').users;
 const router = express.Router();
 const usersValidation = require('../routes/validations/users');
- const Groups = require('../models').groups;
+const Groups = require('../models').groups;
 
 router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) => {
     const firstName = req.query.firstName;
@@ -21,14 +21,16 @@ router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) 
 }));
 
 router.get('/:id', validate(usersValidation.get), asyncHandler(async (req, res) => {
-    const user = await User.findByPk(req.params.id, {include: [{
-        model: Groups,
-        as: 'groups',
-        required: false,
-        through: {
-            attributes: ['groupId']
-        }
-    }]});
+    const user = await User.findByPk(req.params.id, {
+        include: [{
+            model: Groups,
+            as: 'groups',
+            required: false,
+            through: {
+                attributes: ['groupId']
+            }
+        }]
+    });
 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
@@ -47,7 +49,7 @@ router.get('/', validate(usersValidation.get), asyncHandler(async (req, res) => 
 
 
 router.post('/', validate(usersValidation.post), asyncHandler(async (req, res) => {
-    const { firstName, age, professionId, logo  } = req.body.user;
+    const { firstName, age, professionId, logo } = req.body.user;
 
     try {
         const user = await User.create({ firstName, age, professionId, logo });

@@ -15,4 +15,8 @@ export class GroupService {
   readAllGroup():Observable<Group[]> {
     return this.httpClient.get<Group[]>(baseURL);
   }
+
+  read(id): Observable<any> {
+    return this.httpClient.get(`${baseURL}/${id}`);
+  }
 }
