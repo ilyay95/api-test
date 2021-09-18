@@ -1,10 +1,10 @@
 const express = require('express');
+const asyncHandler = require('express-async-handler');
+const { validate } = require('express-validation');
 const Group = require('../models').groups
 const router = express.Router();
 const Users = require('../models').users;
-const { validate } = require('express-validation');
 const groupsValidation = require('../routes/validations/groups');
-const asyncHandler = require('express-async-handler');
 
 router.get('/', async (req, res) => {
     const groups = await Group.findAll({

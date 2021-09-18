@@ -49,4 +49,5 @@ describe('GET /api/groups', () => {
                 .expect(StatusCodes.BAD_REQUEST);
         });
     });
+
 });

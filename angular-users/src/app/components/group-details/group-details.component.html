@@ -4,19 +4,19 @@
         <div class="col-sm bg-light bg-light border border-1">
             <div class="form-group"> 
                 <label for="groups" class="fw-bold">Users not in a group</label>
-                <ul>
-                    <li *ngFor="let user of users; let i = index" [class.active]="i == currentIndex"
-                    routerLink="/users/{{ user.id }}">{{ user.firstName }}</li>
-                </ul>
+                <div class="list-group">
+                    <a class="border mb-2 w-25 list-group-item list-group-item-action" *ngFor="let result of results; let i = index" [class.active]="i == currentIndex" (click)="userInGroup(result)"
+                    >{{ result.firstName }}</a>
+                </div>
             </div>
         </div>
                     
         <div class="col-sm bg-light bg-light border border-1">
             <div class="form-group">
                 <label for="groups" class="fw-bold">Users in the group</label>
-                <ul>
-                    <li *ngFor="let user of currentGroup.users; let i = index" [class.active]="i == currentIndex">{{ user.firstName }}</li>
-                </ul>
+                <div class="list-group">
+                    <a class="border mb-2 w-25 list-group-item list-group-item-action" *ngFor="let user of currentGroup.users; let i = index" [class.active]="i == currentIndex" (click)="userFromGroup(user)">{{ user.firstName }}</a>
+                </div>
             </div>
         </div>
     </div>       
