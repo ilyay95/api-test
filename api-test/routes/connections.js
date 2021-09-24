@@ -2,18 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { validate } = require('express-validation');
 const connectionsValidation = require('../routes/validations/connections');
+const { StatusCodes } = require('http-status-codes');
 const asyncHandler = require('express-async-handler');
 const Connects = require('../models').connections;
 
 router.delete('/:id', validate(connectionsValidation.delete), asyncHandler(async (req, res) => {
-    const user = await Connects.findByPk(req.params.id);
+    const connection = await Connects.findByPk(req.params.id);
 
-    if (!user) {
+    if (!connection) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
 
     try {
-        await user.destroy();
+        await connection.destroy();
 
         res.sendStatus(StatusCodes.NO_CONTENT);
     } catch (error) {
@@ -22,12 +23,12 @@ router.delete('/:id', validate(connectionsValidation.delete), asyncHandler(async
 }));
 
 router.post('/', validate(connectionsValidation.post), asyncHandler(async (req, res) => {
-    const { groupId, userId } = req.body.user;
+    const { groupId, userId } = req.body.connection;
 
     try {
-        const user = await Connects.create({ groupId, userId });
+        const connection = await Connects.create({ groupId, userId });
 
-        res.send({ user });
+        res.send({ connection });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
     }

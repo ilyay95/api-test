@@ -34,7 +34,6 @@ export class GroupDetailsComponent implements OnInit {
       .subscribe(
         data => {
           this.users = data['users'];
-          console.log(data);
         },
         error => {
           console.log(error);
@@ -47,53 +46,51 @@ export class GroupDetailsComponent implements OnInit {
         data => {
           this.currentGroup = data['group'];
           this.results = this.users.filter(x => !this.currentGroup.users.some(y => x.firstName === y.firstName));
-          console.log(this.results)
         },
         error => {
           console.log(error);
         });
   }
   
-  userInGroup(result): void{
-    this.currentGroup.users.push(result);
-    this.res= result.id
-    this.results.splice(this.results.indexOf(this.res), 1);
-    this.users.splice(this.results.indexOf(this.res), 1);
-    this.createGroup(result)
+  addUserInGroup(user): void{
+    this.createConnect(user);
   }
 
-  createGroup(result): void {
+  createConnect(user): void {
     const data = {
-      user: {
+      connection: {
         groupId: this.currentGroup.id,
-        userId:  result.id
+        userId:  user.id
       }
     };
     this.connectionServise.create(data)
       .subscribe(
         response => {
           console.log(response);
+          this.getGroup(this.route.snapshot.paramMap.get('id'));
+          this.readUsers();
         },
         error => {
           console.log(error);
         });   
+        
   }
   
-  deleteGroup(user): void {
+  deleteUserFromGroup(user): void {
+    this.deleteConnect(user);
+  }
+
+  deleteConnect(user): void {
     this.connectionServise.delete(user.connections.id)
       .subscribe(
         response => {
           console.log(response);
+          this.getGroup(this.route.snapshot.paramMap.get('id'));
+          this.readUsers();
         },
         error => {
           console.log(error);
         });
-  }
-
-  userFromGroup(result): void{
-    this.results.push(result);
-    this.currentGroup.users.splice(this.currentGroup.users.indexOf(result), 1);
-    this.deleteGroup(result)
   }
 
 }

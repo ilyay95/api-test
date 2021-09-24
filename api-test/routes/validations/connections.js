@@ -12,7 +12,7 @@ const validations = {
     },
     post: {
         body: Joi.object({
-            user: Joi.object({
+            connection: Joi.object({
                 userId: Joi.number()
                     .min(1)
                     .max(100)
