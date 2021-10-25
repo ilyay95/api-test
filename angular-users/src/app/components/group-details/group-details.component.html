@@ -1,16 +1,14 @@
-<form *ngIf ="currentGroup">
-    <div class="row gap-3">
+<form >
+    <div class="row gap-3" *ngIf="currentGroup">
         <p class="text-center h3">Group {{ currentGroup.name }}</p>
-        <div class="col-sm bg-light bg-light border border-1">
+        <div class="col-sm bg-light bg-light border border-1 ggg">
             <div class="form-group"> 
                 <label for="groups" class="fw-bold d-flex justify-content-around pt-3 pb-3">Users not in a group</label>
-                <div class="list-group text-center">
-                    <a class="border mb-2 w-25 list-group-item list-group-item-action btn container-fluid" *ngFor="let result of results; let i = index" [class.active]="i == currentIndex" (click)="addUserInGroup(result)"
-                    >{{ result.firstName }}</a>
+                <div *ngIf="results" class="list-group text-center">
+                    <a  class="border mb-2 w-25 list-group-item list-group-item-action btn container-fluid" *ngFor="let result of results; let i = index" [class.active]="i == currentIndex" (click)="addUserInGroup(result)">{{ result.firstName }}</a>
                 </div>
             </div>
-        </div>
-                    
+        </div>   
         <div class="col-sm bg-light bg-light border border-1">
             <div class="form-group">
                 <label for="groups" class="fw-bold d-flex justify-content-around pt-3 pb-3">Users in the group</label>
@@ -19,6 +17,8 @@
                 </div>
             </div>
         </div>
-    </div>       
+    </div>      
+    <button class="mt-4 btn btn-sm btn-danger" (click)="confirmMethod()">
+        Delete
+    </button>
 </form>
-

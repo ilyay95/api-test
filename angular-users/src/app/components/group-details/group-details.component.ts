@@ -3,41 +3,44 @@ import { ActivatedRoute } from '@angular/router';
 import { GroupService } from 'src/app/services/group.service';
 import { UserService } from 'src/app/services/user.service';
 import { ConnectionService } from 'src/app/services/connection.service';
+import { Router } from '@angular/router';
+import { BaseComponent } from 'src/app/base/base.component';
 
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.css']
 })
-export class GroupDetailsComponent implements OnInit {
+export class GroupDetailsComponent  extends BaseComponent implements OnInit {
 
-  users: any;
+  users = this.userService.users;
   currentGroup = null;
-  user: any;
   results: any;
-  res: any;
+  deleteMessage = 'Are you sure you want to delete the group';
 
-  constructor(
-    private userService: UserService,
-    private groupService : GroupService,
-    private connectionServise : ConnectionService,
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit(): void {
-    this.readUsers();
-    this.getGroup(this.route.snapshot.paramMap.get('id'));
+  constructor(public router: Router,
+    public userService: UserService,
+    public groupService : GroupService,
+    public connectionServise : ConnectionService,
+    public route: ActivatedRoute) {
+    super(router,userService,groupService,connectionServise,route); 
   }
 
-  readUsers(): void {
-    this.userService.readAll()
-      .subscribe(
-        data => {
-          this.users = data['users'];
-        },
-        error => {
-          console.log(error);
-        });
+  ngOnInit(): void {
+    this.userService.readUsers();
+    this.getGroup(this.route.snapshot.paramMap.get('id'));
+   }
+
+   deleteUserFromGroup(user): void {
+    this.deleteConnect(user.connections.id);
+    this.userService.readUsers();
+    this.getGroup(this.route.snapshot.paramMap.get('id'));
+  }
+  
+  addUserInGroup(user): void {
+    this.createConnect(user);
+    this.userService.readUsers();
+    this.getGroup(this.route.snapshot.paramMap.get('id'));
   }
 
   getGroup(id): void {
@@ -45,52 +48,31 @@ export class GroupDetailsComponent implements OnInit {
       .subscribe(
         data => {
           this.currentGroup = data['group'];
-          this.results = this.users.filter(x => !this.currentGroup.users.some(y => x.firstName === y.firstName));
-        },
-        error => {
-          console.log(error);
-        });
-  }
-  
-  addUserInGroup(user): void{
-    this.createConnect(user);
-  }
-
-  createConnect(user): void {
-    const data = {
-      connection: {
-        groupId: this.currentGroup.id,
-        userId:  user.id
-      }
-    };
-    this.connectionServise.create(data)
-      .subscribe(
-        response => {
-          console.log(response);
-          this.getGroup(this.route.snapshot.paramMap.get('id'));
-          this.readUsers();
-        },
-        error => {
-          console.log(error);
-        });   
-        
-  }
-  
-  deleteUserFromGroup(user): void {
-    this.deleteConnect(user);
-  }
-
-  deleteConnect(user): void {
-    this.connectionServise.delete(user.connections.id)
-      .subscribe(
-        response => {
-          console.log(response);
-          this.getGroup(this.route.snapshot.paramMap.get('id'));
-          this.readUsers();
+          if(this.userService.users) {
+            this.results = this.userService.users.filter(x => !this.currentGroup.users.some(y => x.firstName === y.firstName));
+          }
         },
         error => {
           console.log(error);
         });
   }
 
+  confirmMethod(): void {
+    if(confirm(this.deleteMessage)) {
+      this.deleteGroup();
+    }
+  }
+
+  deleteGroup(): void {
+    this.groupService.delete(this.currentGroup.id)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.router.navigate(['/groups']);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+  
 }

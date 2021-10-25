@@ -7,13 +7,15 @@ const User = require('../models').users;
 const router = express.Router();
 const usersValidation = require('../routes/validations/users');
 const Groups = require('../models').groups;
+const Connects = require('../models').connections;
+
 
 router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) => {
     const firstName = req.query.firstName;
     let users;
 
     if (firstName) {
-        users = await User.findAll({ where: { firstName } })
+        users = await User.findAll({ where: { firstName } });
     } else {
         users = await User.findAll({ raw: true });
     }
@@ -79,17 +81,14 @@ router.put('/:id', validate(usersValidation.put), asyncHandler(async (req, res) 
 
 router.delete('/:id', validate(usersValidation.delete), asyncHandler(async (req, res) => {
     const user = await User.findByPk(req.params.id);
+    const userId = req.params.id;
 
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
 
+    await Connects.destroy({where: { userId }});
     await user.destroy();
-    res.sendStatus(StatusCodes.NO_CONTENT);
-}));
-
-router.delete('/', asyncHandler(async (req, res) => {
-    await User.destroy({ where: {} });
     res.sendStatus(StatusCodes.NO_CONTENT);
 }));
 

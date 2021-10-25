@@ -32,7 +32,6 @@ export class UserDetailsComponent implements OnInit {
       .subscribe(
         data => {
           this.currentUser = data['user'];
-          console.log(data);
         },
         error => {
           console.log(error);
@@ -44,7 +43,6 @@ export class UserDetailsComponent implements OnInit {
     .subscribe(
       data => {
         this.professions = data['professions'];
-        console.log(data);
       },
       error => {
         console.log(error);

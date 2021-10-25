@@ -5,7 +5,7 @@ const app = require('../app');
 const Connects = require('../models').connections;
 
 describe('DELETE /api/connections/:id', () => {
-    it.only('should delete single connect', async () => {
+    it('should delete single connect', async () => {
         const testConnect = {
             connects: {
                 userId: '1',

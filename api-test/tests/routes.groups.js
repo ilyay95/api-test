@@ -50,4 +50,43 @@ describe('GET /api/groups', () => {
         });
     });
 
+    describe('POST /api/groups', () => {
+        it('create one user', async () => {
+            const testUser = {
+                group: {
+                    name: 'Name'
+                }
+            };
+            const usersBeforeLength = await Group.count();
+
+            await supertest(app)
+                .post('/api/groups')
+                .send(testUser)
+                .expect(StatusCodes.OK);
+            const usersAfterLength = await Group.count();
+
+            assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
+        });
+
+        it('should return validation error for invalid userName', async () => {
+            const incorrectUser = {
+                group: {
+                    name: 'Na'
+                }
+            };
+
+            await supertest(app)
+                .post('/api/groups')
+                .send(incorrectUser)
+                .expect(StatusCodes.BAD_REQUEST);
+        });
+
+        it('should return internal server error from for empty object', async () => {
+            await supertest(app)
+                .post('/api/groups')
+                .send({})
+                .expect(StatusCodes.INTERNAL_SERVER_ERROR);
+        });
+    });
+
 });

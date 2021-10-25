@@ -13,14 +13,11 @@ export class UserListComponent implements OnInit {
 
   users: any;
   professions: any;
-  groups:any;
+  groups: any;
   currentUser = null;
   currentIndex = -1;
-  currentProfessions = null;
-  currentIndexProfessions = -1;
   firstName = '';
-  deleteMessage = 'Are you sure you want to delete the user';
-
+  
   constructor(
     private userService: UserService,
     private professionService: ProfessionService,
@@ -28,21 +25,9 @@ export class UserListComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.readUsers();
     this.readProfessions();
+    this.readUsers();
     this.readGroups();
-  }
-
-  readUsers(): void {
-    this.userService.readAll()
-      .subscribe(
-        data => {
-          this.users = data['users'];
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        });
   }
 
   readProfessions(): void {
@@ -50,53 +35,55 @@ export class UserListComponent implements OnInit {
     .subscribe(
       data => {
         this.professions = data['professions'];
-        console.log(data);
       },
       error => {
         console.log(error);
       });
   }
-  
+
+  readUsers(): void {
+    this.userService.readAll()
+      .subscribe(
+        data => {
+          this.users = data['users'];
+          this.usersWhisProfession();
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  usersWhisProfession():void{
+    this.users = this.users.map((user) => {
+      user.professionName = this.professions.find((profession) => user.professionId === profession.id).name;
+      return user;
+    })
+  }
+
   readGroups(): void {
     this.groupService.readAllGroup()
     .subscribe(
       data => {
         this.groups = data['groups'];
-        console.log(data);
       },
       error => {
         console.log(error);
       });
   } 
   
-  deleteAllUsers(): void {
-    this.userService.deleteAll()
-      .subscribe(
-        response => {
-          console.log(response);
-          this.readUsers();
-        },
-        error => {
-          console.log(error);
-        });
-  }
-
   searchByName(): void {
+    if(this.firstName) {
     this.userService.searchByName(this.firstName)
       .subscribe(
         data => {
-          this.users = data['users']
-          console.log(data);
+          this.users = data['users'];
+          this.usersWhisProfession();
         },
         error => {
           console.log(error);
         });
-  }
-
-  confirmMethod(): void {
-    if(confirm(this.deleteMessage)) {
-      this.deleteAllUsers();
-    }
+      }
+      else this.readUsers();
   }
 
 }

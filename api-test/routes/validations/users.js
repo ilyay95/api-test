@@ -7,7 +7,6 @@ const validations = {
                 .trim()
                 .min(3)
                 .max(50)
-
         })
     },
     get: {

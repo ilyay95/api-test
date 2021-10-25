@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     return queryInterface.bulkInsert('groups',
       [
         { name: 'group1' },
@@ -12,7 +12,7 @@ module.exports = {
       ]
     )
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     return queryInterface.bulkDelete('groups', 
     [
         { name: 'group1' },

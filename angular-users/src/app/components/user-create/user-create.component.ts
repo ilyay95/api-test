@@ -23,7 +23,7 @@ export class UserCreateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.readProfessions()
+    this.readProfessions();
   }
 
   readProfessions(): void {
@@ -31,7 +31,6 @@ export class UserCreateComponent implements OnInit {
     .subscribe(
       data => {
         this.professions = data['professions'];
-        console.log(data);
       },
       error => {
         console.log(error);

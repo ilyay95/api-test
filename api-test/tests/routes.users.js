@@ -223,33 +223,3 @@ describe('DELETE /api/users/:id', () => {
             .expect(StatusCodes.BAD_REQUEST);
     });
 });
-
-describe('DELETE /api/users/', () => {
-    it('should delete all users', async () => {
-        const testUsers = {
-            firstUser: {
-                firstName: 'testName',
-                age: '25',
-                professionId: '1'
-            },
-            secondUser: {
-                firstName: 'test',
-                age: '22',
-                professionId: '1'
-            },
-        };
-        const firstUser = await User.create(testUsers.firstUser);
-        const secondUser = await User.create(testUsers.secondUser);
-
-        await supertest(app)
-            .delete(`/api/users/`)
-            .expect(StatusCodes.NO_CONTENT);
-
-        const firstUserId = await User.findByPk(firstUser.id);
-        const secondUserId = await User.findByPk(secondUser.id);
-
-        assert.deepStrictEqual(firstUserId, null, 'delete first user');
-        assert.deepStrictEqual(secondUserId, null, 'delete second user');
-    });
-});
-

@@ -9,6 +9,9 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { GroupDetailsComponent } from './components/group-details/group-details.component';
+import { BaseComponent } from './base/base.component';
+import { ConnectionsCreateComponent } from './components/connections-create/connections-create.component';
+import { GroupListComponent } from './components/group-list/group-list.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { GroupDetailsComponent } from './components/group-details/group-details.
     UserCreateComponent,
     UserDetailsComponent,
     UserListComponent,
-    GroupDetailsComponent
+    BaseComponent,
+    GroupDetailsComponent,
+    ConnectionsCreateComponent,
+    GroupListComponent,
   ],
   imports: [
     BrowserModule,

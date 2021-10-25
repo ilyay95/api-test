@@ -4,9 +4,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Connection extends Model {
-    static associate(models) {
+    static associate() {
     }
-  };
+  }
   Connection.init({
     id: {
       allowNull: false,
