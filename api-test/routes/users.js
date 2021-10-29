@@ -11,14 +11,8 @@ const Connects = require('../models').connections;
 
 
 router.get('/', validate(usersValidation.select), asyncHandler(async (req, res) => {
-    const firstName = req.query.firstName;
-    let users;
+    let users = await User.findAll({ raw: true });
 
-    if (firstName) {
-        users = await User.findAll({ where: { firstName } });
-    } else {
-        users = await User.findAll({ raw: true });
-    }
     res.send({ users });
 }));
 

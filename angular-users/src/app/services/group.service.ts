@@ -12,7 +12,7 @@ export class GroupService {
 
   constructor(private httpClient: HttpClient) { }
 
-  readAllGroup():Observable<Group[]> {
+  readAllGroup(): Observable<Group[]> {
     return this.httpClient.get<Group[]>(baseURL);
   }
 
@@ -24,10 +24,6 @@ export class GroupService {
     return this.httpClient.post(baseURL, data);
   }
 
-  searchByName(name): Observable<Group[]> {
-    return this.httpClient.get<Group[]>(`${baseURL}?name=${name}`);
-  }
-  
   delete(id): Observable<any> {
     return this.httpClient.delete(`${baseURL}/${id}`);
   }

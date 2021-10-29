@@ -28,13 +28,13 @@ export class UserCreateComponent implements OnInit {
 
   readProfessions(): void {
     this.professionService.readAllProfession()
-    .subscribe(
-      data => {
-        this.professions = data['professions'];
-      },
-      error => {
-        console.log(error);
-      });
+      .subscribe(
+        data => {
+          this.professions = data['professions'];
+        },
+        error => {
+          console.log(error);
+        });
   }
 
   createUser(): void {
@@ -55,6 +55,6 @@ export class UserCreateComponent implements OnInit {
         },
         error => {
           console.log(error);
-        });   
+        });
   }
 }

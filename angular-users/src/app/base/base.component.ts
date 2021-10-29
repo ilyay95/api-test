@@ -26,7 +26,7 @@ export class BaseComponent implements OnInit {
     public route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
+
   }
 
   getGroup(id): void {
@@ -40,12 +40,12 @@ export class BaseComponent implements OnInit {
           console.log(error);
         });
   }
-  
+
   createConnect(user): void {
     const data = {
       connection: {
         groupId: this.currentGroup.id,
-        userId:  user.id
+        userId: user.id
       }
     };
     this.connectionServise.create(data)
@@ -57,9 +57,9 @@ export class BaseComponent implements OnInit {
         },
         error => {
           console.log(error);
-        });     
+        });
   }
-  
+
   deleteConnect(user): void {
     this.connectionServise.delete(user)
       .subscribe(

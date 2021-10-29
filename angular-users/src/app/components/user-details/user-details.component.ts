@@ -14,7 +14,7 @@ export class UserDetailsComponent implements OnInit {
   professions: any;
   deleteMessage = 'Are you sure you want to delete the user';
   currentProduct = null;
-  
+
   constructor(
     private userService: UserService,
     private professionService: ProfessionService,
@@ -40,13 +40,13 @@ export class UserDetailsComponent implements OnInit {
 
   readProfessions(): void {
     this.professionService.readAllProfession()
-    .subscribe(
-      data => {
-        this.professions = data['professions'];
-      },
-      error => {
-        console.log(error);
-      });
+      .subscribe(
+        data => {
+          this.professions = data['professions'];
+        },
+        error => {
+          console.log(error);
+        });
   }
 
   setCurrentProduct(): void {
@@ -75,7 +75,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   confirmMethod(): void {
-    if(confirm(this.deleteMessage)) {
+    if (confirm(this.deleteMessage)) {
       this.deleteUser();
     }
   }

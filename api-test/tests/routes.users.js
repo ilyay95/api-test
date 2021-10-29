@@ -27,39 +27,6 @@ describe('GET /api/users', () => {
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
 
-    it('return users by name', async () => {
-        const testUser = {
-            firstName: 'name',
-            age: '11',
-            professionId: '1'
-        };
-
-        const user = await User.create(testUser);
-        const firstName = user.firstName;
-        const users = await User.findAll({ where: { firstName } });
-        const usersBeforeLength = users.length;
-
-        const res = await supertest(app)
-            .get(`/api/users?firstName=${user.firstName}`)
-            .expect(StatusCodes.OK);
-        const usersAfter = res.body.users;
-        const usersAfterLength = usersAfter.length;
-
-        assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
-    });
-
-    it('validation error for invalid firstName', async () => {
-        const testUser = {
-            firstName: 'b',
-            age: '11',
-            professionId: '1'
-        };
-        const user = await User.create(testUser);
-
-        await supertest(app)
-            .get(`/api/users?firstName=${user.firstName}`)
-            .expect(StatusCodes.BAD_REQUEST);
-    });
 });
 
 describe('PUT /api/users/:id', () => {

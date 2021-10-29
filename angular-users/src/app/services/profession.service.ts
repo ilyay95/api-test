@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Profession} from '../models/profession.model'
+import { Profession } from '../models/profession.model'
 
 const baseURL = 'http://localhost:3000/api/professions';
 
@@ -12,7 +12,7 @@ export class ProfessionService {
 
   constructor(private httpClient: HttpClient) { }
 
-  readAllProfession():Observable<Profession[]> {
+  readAllProfession(): Observable<Profession[]> {
     return this.httpClient.get<Profession[]>(baseURL);
   }
 }

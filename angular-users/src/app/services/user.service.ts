@@ -9,7 +9,7 @@ const baseURL = 'http://localhost:3000/api/users';
   providedIn: 'root'
 })
 export class UserService {
-users:any;
+  users: any;
   constructor(private httpClient: HttpClient) { }
 
   readAll(): Observable<User[]> {
@@ -32,18 +32,14 @@ users:any;
     return this.httpClient.delete(`${baseURL}/${id}`);
   }
 
-  searchByName(firstName): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${baseURL}?firstName=${firstName}`);
-  }
-
   readUsers(): void {
-      this.readAll()
-        .subscribe(
-          data => {
-            this.users = data['users'];
-          },
-          error => {
-            console.log(error);
-          });
-    }
+    this.readAll()
+      .subscribe(
+        data => {
+          this.users = data['users'];
+        },
+        error => {
+          console.log(error);
+        });
+  }
 }

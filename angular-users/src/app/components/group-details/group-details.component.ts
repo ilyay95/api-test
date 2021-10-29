@@ -11,7 +11,7 @@ import { BaseComponent } from 'src/app/base/base.component';
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.css']
 })
-export class GroupDetailsComponent  extends BaseComponent implements OnInit {
+export class GroupDetailsComponent extends BaseComponent implements OnInit {
 
   users = this.userService.users;
   currentGroup = null;
@@ -20,23 +20,23 @@ export class GroupDetailsComponent  extends BaseComponent implements OnInit {
 
   constructor(public router: Router,
     public userService: UserService,
-    public groupService : GroupService,
-    public connectionServise : ConnectionService,
+    public groupService: GroupService,
+    public connectionServise: ConnectionService,
     public route: ActivatedRoute) {
-    super(router,userService,groupService,connectionServise,route); 
+    super(router, userService, groupService, connectionServise, route);
   }
 
   ngOnInit(): void {
     this.userService.readUsers();
     this.getGroup(this.route.snapshot.paramMap.get('id'));
-   }
+  }
 
-   deleteUserFromGroup(user): void {
+  deleteUserFromGroup(user): void {
     this.deleteConnect(user.connections.id);
     this.userService.readUsers();
     this.getGroup(this.route.snapshot.paramMap.get('id'));
   }
-  
+
   addUserInGroup(user): void {
     this.createConnect(user);
     this.userService.readUsers();
@@ -48,7 +48,7 @@ export class GroupDetailsComponent  extends BaseComponent implements OnInit {
       .subscribe(
         data => {
           this.currentGroup = data['group'];
-          if(this.userService.users) {
+          if (this.userService.users) {
             this.results = this.userService.users.filter(x => !this.currentGroup.users.some(y => x.firstName === y.firstName));
           }
         },
@@ -58,7 +58,7 @@ export class GroupDetailsComponent  extends BaseComponent implements OnInit {
   }
 
   confirmMethod(): void {
-    if(confirm(this.deleteMessage)) {
+    if (confirm(this.deleteMessage)) {
       this.deleteGroup();
     }
   }
@@ -74,5 +74,5 @@ export class GroupDetailsComponent  extends BaseComponent implements OnInit {
           console.log(error);
         });
   }
-  
+
 }

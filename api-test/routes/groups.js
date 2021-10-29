@@ -9,31 +9,19 @@ const groupsValidation = require('../routes/validations/groups');
 const Connects = require('../models').connections;
 
 router.get('/', validate(groupsValidation.select), async (req, res) => {
-    const name = req.query.name;
     let groups;
 
-    if (name) {
-        groups = await Group.findAll({ where: { name },
-            include: [{
+    groups = await Group.findAll({
+        include: [{
             model: Users,
             as: 'users',
             required: false,
             through: {
                 attributes: ['id']
             }
-        }] })
-    } else {
-         groups = await Group.findAll({
-            include: [{
-                model: Users,
-                as: 'users',
-                required: false,
-                through: {
-                    attributes: ['id']
-                }
-            }]
-        });
-    }
+        }]
+    });
+
     res.send({ groups });
 });
 
@@ -74,7 +62,7 @@ router.delete('/:id', validate(groupsValidation.delete), asyncHandler(async (req
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
-    await Connects.destroy({where: { groupId }});
+    await Connects.destroy({ where: { groupId } });
     await user.destroy();
     res.sendStatus(StatusCodes.NO_CONTENT);
 }));
