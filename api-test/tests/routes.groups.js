@@ -23,70 +23,83 @@ describe('GET /api/groups', () => {
         assert.strictEqual(groupsBeforeLength, groupsAfterLength, 'return all groups');
     });
 
-    describe('GET /api/groups/:id', () => {
-        it('should return single group', async () => {
-
-            const testGroup = {
-                name: 'testGroup'
-            };
-
-            const newGroup = await Group.create(testGroup);
-
-            const res = await supertest(app)
-                .get(`/api/groups/${newGroup.id}`)
-                .expect(StatusCodes.OK);
-
-            const group = res.body.group.name;
-
-            assert.deepStrictEqual(testGroup.name, group, 'rerutn correct group');
-        });
-
-        it('should return validation error for invalid id', async () => {
-            const invalidId = 2.5;
-
-            await supertest(app)
-                .get(`/api/groups/${invalidId}`)
-                .expect(StatusCodes.BAD_REQUEST);
-        });
+    it('should return validation error for invalid currentPage', async () => {
+        await supertest(app)
+            .get(`/api/groups?currentPage=0&pageSize=1`)
+            .expect(StatusCodes.BAD_REQUEST);
     });
 
-    describe('POST /api/groups', () => {
-        it('create one user', async () => {
-            const testUser = {
-                group: {
-                    name: 'Name'
-                }
-            };
-            const usersBeforeLength = await Group.count();
+    it('should return validation error for invalid pageSize', async () => {
+        await supertest(app)
+            .get(`/api/groups?currentPage=1&pageSize=0`)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
+})
 
-            await supertest(app)
-                .post('/api/groups')
-                .send(testUser)
-                .expect(StatusCodes.OK);
-            const usersAfterLength = await Group.count();
+describe('GET /api/groups/:id', () => {
+    it('should return single group', async () => {
 
-            assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
-        });
+        const testGroup = {
+            name: 'testGroup'
+        };
 
-        it('should return validation error for invalid userName', async () => {
-            const incorrectUser = {
-                group: {
-                    name: 'Na'
-                }
-            };
+        const newGroup = await Group.create(testGroup);
 
-            await supertest(app)
-                .post('/api/groups')
-                .send(incorrectUser)
-                .expect(StatusCodes.BAD_REQUEST);
-        });
+        const res = await supertest(app)
+            .get(`/api/groups/${newGroup.id}`)
+            .expect(StatusCodes.OK);
 
-        it('should return internal server error from for empty object', async () => {
-            await supertest(app)
-                .post('/api/groups')
-                .send({})
-                .expect(StatusCodes.INTERNAL_SERVER_ERROR);
-        });
+        const group = res.body.group.name;
+
+        assert.deepStrictEqual(testGroup.name, group, 'rerutn correct group');
     });
 
+    it('should return validation error for invalid id', async () => {
+        const invalidId = 2.5;
+
+        await supertest(app)
+            .get(`/api/groups/${invalidId}`)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
 });
+
+describe('POST /api/groups', () => {
+    it('create one user', async () => {
+        const testUser = {
+            group: {
+                name: 'Name'
+            }
+        };
+        const usersBeforeLength = await Group.count();
+
+        await supertest(app)
+            .post('/api/groups')
+            .send(testUser)
+            .expect(StatusCodes.OK);
+        const usersAfterLength = await Group.count();
+
+        assert.strictEqual(usersBeforeLength + 1, usersAfterLength, 'create correct user');
+    });
+
+    it('should return validation error for invalid userName', async () => {
+        const incorrectUser = {
+            group: {
+                name: 'Na'
+            }
+        };
+
+        await supertest(app)
+            .post('/api/groups')
+            .send(incorrectUser)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
+
+    it('should return internal server error from for empty object', async () => {
+        await supertest(app)
+            .post('/api/groups')
+            .send({})
+            .expect(StatusCodes.INTERNAL_SERVER_ERROR);
+    });
+});
+
+

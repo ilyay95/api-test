@@ -6,6 +6,7 @@ const User = require('../models').users;
 const Group = require('../models').groups;
 const Connection = require('../models').connections;
 
+
 describe('GET /api/users', () => {
     it('return all users', async () => {
         const testUser = {
@@ -27,6 +28,19 @@ describe('GET /api/users', () => {
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
 
+    it('should return validation error for invalid currentPage', async () => {
+
+        await supertest(app)
+            .get(`/api/users?currentPage=0&pageSize=1`)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
+
+    it('should return validation error for invalid pageSize', async () => {
+
+        await supertest(app)
+            .get(`/api/users?currentPage=1&pageSize=0`)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
 });
 
 describe('PUT /api/users/:id', () => {
