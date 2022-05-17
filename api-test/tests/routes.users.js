@@ -3,6 +3,9 @@ const { StatusCodes } = require('http-status-codes');
 const supertest = require('supertest');
 const app = require('../app');
 const User = require('../models').users;
+const Group = require('../models').groups;
+const Connection = require('../models').connections;
+
 
 describe('GET /api/users', () => {
     it('return all users', async () => {
@@ -25,37 +28,17 @@ describe('GET /api/users', () => {
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
 
-    it('return users by name', async () => {
-        const testUser = {
-            firstName: 'name',
-            age: '11',
-            professionId: '1'
-        };
-
-        const user = await User.create(testUser);
-        const firstName = user.firstName;
-        const users = await User.findAll({ where: { firstName } });
-        const usersBeforeLength = users.length;
-
-        const res = await supertest(app)
-            .get(`/api/users?firstName=${user.firstName}`)
-            .expect(StatusCodes.OK);
-        const usersAfter = res.body.users;
-        const usersAfterLength = usersAfter.length;
-
-        assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
-    });
-
-    it('validation error for invalid firstName', async () => {
-        const testUser = {
-            firstName: 'b',
-            age: '11',
-            professionId: '1'
-        };
-        const user = await User.create(testUser);
+    it('should return validation error for invalid currentPage', async () => {
 
         await supertest(app)
-            .get(`/api/users?firstName=${user.firstName}`)
+            .get(`/api/users?currentPage=0&pageSize=1`)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
+
+    it('should return validation error for invalid pageSize', async () => {
+
+        await supertest(app)
+            .get(`/api/users?currentPage=1&pageSize=0`)
             .expect(StatusCodes.BAD_REQUEST);
     });
 });
@@ -153,10 +136,22 @@ describe('GET /api/users/:id', () => {
         const testUser = {
             firstName: 'testName',
             age: '25',
-            professionId: '3'
+            professionId: '3',
+            logo: 'https://c.wallhere.com/photos/86/61/skull_demon_Latin_horned_pentagram_Satanism_devils_satanic-5549.jpg!d'
+        };
+        const testGroup = {
+            name: 'testGroup'
         };
 
         const newUser = await User.create(testUser);
+        const newGroup = await Group.create(testGroup);
+
+        const testConnection = {
+            userId: `${newUser.id}`,
+            groupId: `${newGroup.id}`
+        };
+
+        await Connection.create(testConnection);
 
         const res = await supertest(app)
             .get(`/api/users/${newUser.id}`)
@@ -164,9 +159,11 @@ describe('GET /api/users/:id', () => {
 
         const firstName = res.body.user.firstName;
         const id = res.body.user.id;
+        const group = res.body.user.groups[0].connections.groupId;
 
         assert.deepStrictEqual(newUser.firstName, firstName, 'return correct name');
-        assert.deepStrictEqual(newUser.id, id, 'rerutn correct id')
+        assert.deepStrictEqual(newUser.id, id, 'rerutn correct id');
+        assert.deepStrictEqual(newGroup.id, group, 'rerutn correct groupId');
     });
 
     it('should return validation error for invalid id', async () => {
@@ -207,33 +204,3 @@ describe('DELETE /api/users/:id', () => {
             .expect(StatusCodes.BAD_REQUEST);
     });
 });
-
-describe('DELETE /api/users/', () => {
-    it('should delete all users', async () => {
-        const testUsers = {
-            firstUser: {
-                firstName: 'testName',
-                age: '25',
-                professionId: '1'
-            },
-            secondUser: {
-                firstName: 'test',
-                age: '22',
-                professionId: '1'
-            },
-        };
-        const firstUser = await User.create(testUsers.firstUser);
-        const secondUser = await User.create(testUsers.secondUser);
-
-        await supertest(app)
-            .delete(`/api/users/`)
-            .expect(StatusCodes.NO_CONTENT);
-            
-        const firstUserId = await User.findByPk(firstUser.id);
-        const secondUserId = await User.findByPk(secondUser.id);
-
-        assert.deepStrictEqual(firstUserId, null, 'delete first user');
-        assert.deepStrictEqual(secondUserId, null, 'delete second user');
-    });
-});
-    

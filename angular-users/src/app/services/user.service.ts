@@ -1,42 +1,58 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model'
+import { User } from '../models/user.model';
 
 const baseURL = 'http://localhost:3000/api/users';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserService {
+    users: any;
 
-  constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) { }
 
-  readAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(baseURL);
-  }
+    readAll(): Observable<User[]> {
+        return this.httpClient.get<User[]>(`${baseURL}/all`);
+    }
 
-  read(id): Observable<any> {
-    return this.httpClient.get(`${baseURL}/${id}`);
-  }
+    readAllQuery(currentPage, pageSize, firstName): Observable<User[]> {
+        let params = new HttpParams();
+        params = params.append('currentPage', currentPage);
+        params = params.append('pageSize', pageSize);
 
-  create(data): Observable<any> {
-    return this.httpClient.post(baseURL, data);
-  }
+        if (firstName) {
+            params = params.append('search', firstName);
+        }
 
-  update(id, data): Observable<any> {
-    return this.httpClient.put(`${baseURL}/${id}`, data);
-  }
+        return this.httpClient.get<User[]>(`${baseURL}`, { params: params });
+    }
 
-  delete(id): Observable<any> {
-    return this.httpClient.delete(`${baseURL}/${id}`);
-  }
+    read(id): Observable<any> {
+        return this.httpClient.get(`${baseURL}/${id}`);
+    }
 
-  deleteAll(): Observable<any> {
-    return this.httpClient.delete(baseURL);
-  }
+    create(data): Observable<any> {
+        return this.httpClient.post(baseURL, data);
+    }
 
-  searchByName(firstName): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${baseURL}?firstName=${firstName}`);
-  }
+    update(id, data): Observable<any> {
+        return this.httpClient.put(`${baseURL}/${id}`, data);
+    }
+
+    delete(id): Observable<any> {
+        return this.httpClient.delete(`${baseURL}/${id}`);
+    }
+
+    readUsers(): void {
+        this.readAll()
+            .subscribe(
+                data => {
+                    this.users = data['users'];
+                },
+                error => {
+                    console.log(error);
+                });
+    }
 }

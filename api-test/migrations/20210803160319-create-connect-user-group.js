@@ -1,36 +1,41 @@
 module.exports = {
-  up: async function (queryInterface, DataTypes) {
-      await queryInterface.createTable('connection', {
-          id: {
-              allowNull: false,
-              autoIncrement: true,
-              primaryKey: true,
-              type: DataTypes.INTEGER
-          },
-          userId: {
-              allowNull: false,
-              references: {
-                  model: 'users',
-                  key: 'id'
-              },
-              type: DataTypes.INTEGER,
-          },
-          groupId: {
-              allowNull: false,
-              references: {
-                  model: 'group',
-                  key: 'id'
-              },
-              type: DataTypes.INTEGER,
-         },
-          createdAt: {
-              allowNull: false,
-              defaultValue: DataTypes.fn('now'),
-              type: DataTypes.DATE
-          }
-      });
-  },
-  down: async function (queryInterface, DataTypes) {
-      await queryInterface.dropTable('connection');
-  }
+    up: async function (queryInterface, Sequelize) {
+        await queryInterface.createTable('connections', {
+            id: {
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+                type: Sequelize.INTEGER
+            },
+            userId: {
+                allowNull: false,
+                references: {
+                    model: 'users',
+                    key: 'id'
+                },
+                type: Sequelize.INTEGER,
+            },
+            groupId: {
+                allowNull: false,
+                references: {
+                    model: 'groups',
+                    key: 'id'
+                },
+                type: Sequelize.INTEGER,
+            },
+            createdAt: {
+                allowNull: false,
+                defaultValue: Sequelize.fn('now'),
+                type: Sequelize.DATE
+            },
+            updatedAt: {
+                allowNull: false,
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.fn('NOW')
+            }
+        });
+    },
+    down: async function (queryInterface, Sequelize) {
+        await queryInterface.dropTable('connections');
+    }
 };

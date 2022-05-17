@@ -1,0 +1,7 @@
+<form>
+    <div class="form-group">
+        <label for="name" class="mb-4 h2">Create group</label>
+        <input type="text" class="form-control mb-4" required [(ngModel)]="name" name="name" />
+    </div>
+    <button (click)="createGroup()" ng-show="true" class="mt-4 mb-4 btn btn-sm btn-success">Create</button>
+</form>
