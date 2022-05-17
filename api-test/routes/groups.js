@@ -7,23 +7,33 @@ const router = express.Router();
 const Users = require('../models').users;
 const groupsValidation = require('../routes/validations/groups');
 const Connects = require('../models').connections;
+const { Op } = require('sequelize');
 
-router.get('/', validate(groupsValidation.select), async (req, res) => {
+router.get('/', validate(groupsValidation.query), asyncHandler(async (req, res) => {
+    let currentPage = req.query.currentPage;
+    const pageSize = req.query.pageSize;
+    let search = req.query.search;
     let groups;
+    let serchObj = {};
 
-    groups = await Group.findAll({
+    if (search) {
+        serchObj = { name: { [Op.iLike]: `%${search}%` } };
+    }
+
+    let offset = (currentPage - 1) * pageSize;
+
+    groups = await Group.findAndCountAll({
         include: [{
-            model: Users,
-            as: 'users',
-            required: false,
-            through: {
-                attributes: ['id']
-            }
-        }]
+            model: Users
+        }],
+        where: serchObj,
+        distinct: true,
+        offset: offset,
+        limit: pageSize
     });
 
     res.send({ groups });
-});
+}));
 
 router.get('/:id', validate(groupsValidation.get), asyncHandler(async (req, res) => {
     const group = await Group.findByPk(req.params.id, {
@@ -40,6 +50,7 @@ router.get('/:id', validate(groupsValidation.get), asyncHandler(async (req, res)
     if (!group) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
+
     res.send({ group });
 }));
 
@@ -62,8 +73,10 @@ router.delete('/:id', validate(groupsValidation.delete), asyncHandler(async (req
     if (!user) {
         res.sendStatus(StatusCodes.NOT_FOUND);
     }
+
     await Connects.destroy({ where: { groupId } });
     await user.destroy();
+
     res.sendStatus(StatusCodes.NO_CONTENT);
 }));
 
