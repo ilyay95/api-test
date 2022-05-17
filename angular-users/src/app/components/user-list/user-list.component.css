@@ -1,3 +1,50 @@
 .ml-3{
     margin-left: 10px;
 }
+
+.pagination {
+    display: inline-block;
+    padding: 8px 16px;
+    
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 7px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.paginationSelect{
+    display: inline-block;
+    border: 1px solid #ddd; 
+    margin-left: 10px;
+    padding: 7.4px 16px;
+    text-decoration: none;
+}
+
+.pageSize select{
+    border: 1px solid #ddd; 
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a {
+    border: 1px solid #ddd; 
+}
+
+.nav-primary {
+    color : "Black";
+}
+
+.nav-primary.active {
+   color : "white";
+}
+
+::ng-deep #toast-container > div {
+    width: 500px;
+  }

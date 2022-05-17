@@ -1,15 +1,25 @@
-<div class="list row" >
+<div class="list row">
     <div class="col-md-8">
         <div class="input-group mb-4">
-            <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="firstName"/>
+            <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="firstName" />
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary ml-3" type="button" (click)="searchByName()">
+                <button class="btn btn-primary ml-3" type="button" (click)="searchByName(firstName)" role="button">
                     Search
                 </button>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="pagination nav-primary">
+        <a (click)="minus()" role="button">«</a>
+        <a class="pagination nav-primary" *ngFor="let page of pageArr; let i = index"
+            [class.active]="i+1 === currentPage" (click)="searchPage(page)" role="button">{{ page
+            }}</a>
+        <a (click)="plus()" role="button">»</a>
+        <select [(ngModel)]="pageSize" class="paginationSelect" (change)="searchPageSize()" role="button">
+            <option *ngFor="let pageSize of pagesSizeArr">{{ pageSize }}</option>
+        </select>
+    </div>
+    <div class="col-md-6" role="button" role="button">
         <table class="table table-hover">
             <thead class="grey lighten-1 black-text">
                 <tr>
@@ -20,15 +30,16 @@
                 </tr>
             </thead>
             <tbody class="table-hover">
-                <tr *ngFor="let user of users; let i = index" [class.active]="i == currentIndex"
-                routerLink="/users/{{ user.id }}">
-                <td><img [src]="user.logo" height="50" width="50" class="rounded-circle"></td>
-                <td class=".ml-3 align-middle">{{ user.firstName }}</td>
-                <td scope="row" class="align-middle">{{ user.age }}</td>
-                <td scope="row" class="align-middle">{{ user.professionName }}</td>
-            </tr>
-            </tbody> 
+                <tr *ngFor="let user of allUsers; let i = index" [class.active]="i == currentIndex"
+                    routerLink="/users/{{ user.id }}">
+                    <td><img [src]="user.logo" height="50" width="50" class="rounded-circle"></td>
+                    <td class=".ml-3 align-middle">{{ user.firstName }}</td>
+                    <td scope="row" class="align-middle">{{ user.age }}</td>
+                    <td scope="row" class="align-middle">{{ user.professionName }}</td>
+                </tr>
+            </tbody>
         </table>
+        <p *ngIf="this.count==0" class="text-center">No users found</p>
     </div>
     <div *ngIf="!currentUser">
         <br />

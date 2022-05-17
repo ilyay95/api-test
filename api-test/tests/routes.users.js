@@ -6,6 +6,7 @@ const User = require('../models').users;
 const Group = require('../models').groups;
 const Connection = require('../models').connections;
 
+
 describe('GET /api/users', () => {
     it('return all users', async () => {
         const testUser = {
@@ -27,37 +28,17 @@ describe('GET /api/users', () => {
         assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
     });
 
-    it('return users by name', async () => {
-        const testUser = {
-            firstName: 'name',
-            age: '11',
-            professionId: '1'
-        };
-
-        const user = await User.create(testUser);
-        const firstName = user.firstName;
-        const users = await User.findAll({ where: { firstName } });
-        const usersBeforeLength = users.length;
-
-        const res = await supertest(app)
-            .get(`/api/users?firstName=${user.firstName}`)
-            .expect(StatusCodes.OK);
-        const usersAfter = res.body.users;
-        const usersAfterLength = usersAfter.length;
-
-        assert.strictEqual(usersBeforeLength, usersAfterLength, 'return all users');
-    });
-
-    it('validation error for invalid firstName', async () => {
-        const testUser = {
-            firstName: 'b',
-            age: '11',
-            professionId: '1'
-        };
-        const user = await User.create(testUser);
+    it('should return validation error for invalid currentPage', async () => {
 
         await supertest(app)
-            .get(`/api/users?firstName=${user.firstName}`)
+            .get(`/api/users?currentPage=0&pageSize=1`)
+            .expect(StatusCodes.BAD_REQUEST);
+    });
+
+    it('should return validation error for invalid pageSize', async () => {
+
+        await supertest(app)
+            .get(`/api/users?currentPage=1&pageSize=0`)
             .expect(StatusCodes.BAD_REQUEST);
     });
 });

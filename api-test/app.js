@@ -10,14 +10,14 @@ const app = express();
 app.use(cors());
 app.use('/api', router);
 
-app.use(function (err, req, res) {
+app.use(function (err, req, res, _next) {
     console.log(err);
 
     if (err instanceof ValidationError) {
-        return res.status(err.statusCode).send(err)
+        return res.status(err.statusCode).send(err);
     }
-    
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err)
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err);
 })
 
 app.listen(config.httpPort, () => {

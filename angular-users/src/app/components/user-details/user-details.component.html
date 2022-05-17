@@ -3,42 +3,44 @@
         <h4>User {{ currentUser.firstName }}</h4>
         <form>
             <div class="form-group">
-                <img [src]="currentUser.logo" height="100" width="100" class="rounded-circle" (click)="setCurrentProduct()">
+                <img [src]="currentUser.logo" height="100" width="100" class="rounded-circle"
+                    (click)="setCurrentProduct()">
             </div>
             <div class="form-group p-2">
                 <label for="title" class="mb-0 h5">Name</label>
-                <input type="text" class="form-control cursor-wait" id="firstName" [(ngModel)]="currentUser.firstName" name="firstName"/>
+                <input type="text" class="form-control cursor-wait" id="firstName" [(ngModel)]="currentUser.firstName"
+                    name="firstName" />
             </div>
             <div class="form-group p-2">
                 <label for="age" class="mb-0 h5">Age</label>
-                <input type="text" class="form-control" id="age" [(ngModel)]="currentUser.age" name="age"/>
+                <input type="text" class="form-control" id="age" [(ngModel)]="currentUser.age" name="age" />
             </div>
             <div class="form-group p-2">
                 <label for="profession" class="mb-0 h5">Profession</label>
-                <select type="text" class="form-control" id="professions" [(ngModel)]="currentUser.professionId" name="professions">
+                <select type="text" class="form-control" id="professions" [(ngModel)]="currentUser.professionId"
+                    name="professions">
                     <option *ngFor="let p of professions" [ngValue]="p.id">{{ p.name }}</option>
                 </select>
             </div>
             <div *ngIf="currentProduct">
                 <div class="form-group p-2">
                     <label for="logo" class="mb-0 h5">Logo</label>
-                    <input class="form-control" id="logo" required [(ngModel)]="currentUser.logo" name="logo"/>
+                    <input class="form-control" id="logo" required [(ngModel)]="currentUser.logo" name="logo" />
                 </div>
             </div>
             <div>
                 <div class="form-group p-2">
                     <label for="groups" class="mb-0 h5">Groups</label>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item list-group-item-action" *ngFor="let group of currentUser.groups" routerLink="/groups/{{ group.connections.groupId }}">{{ group.name }}</li>
+                        <li class="list-group-item list-group-item-action" *ngFor="let group of currentUser.groups"
+                            routerLink="/groups/{{ group.connections.groupId }}">{{ group.name }}</li>
                     </ul>
                 </div>
             </div>
         </form>
-
         <button class="mt-4 btn btn-sm btn-danger" (click)="confirmMethod()" [routerLink]="['/users']">
             Delete
         </button>
-
         <button type="submit" class="mt-4 mn-4 btn btn-sm btn-success" (click)="updateUser()" [routerLink]="['/users']">
             Update
         </button>

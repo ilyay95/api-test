@@ -18,6 +18,7 @@ router.delete('/:id', validate(connectionsValidation.delete), asyncHandler(async
 
         res.sendStatus(StatusCodes.NO_CONTENT);
     } catch (error) {
+
         res.status(StatusCodes.NO_CONTENT).send({ error });
     }
 }));
@@ -30,6 +31,7 @@ router.post('/', validate(connectionsValidation.post), asyncHandler(async (req, 
 
         res.send({ connection });
     } catch (error) {
+
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
     }
 }));

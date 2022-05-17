@@ -1,11 +1,19 @@
 const { Joi } = require('express-validation');
 
 const validations = {
-    select: {
+    query: {
         query: Joi.object({
-            firstName: Joi.string()
+            currentPage: Joi.number()
+                .min(1)
+                .max(100)
+                .positive(),
+            pageSize: Joi.number()
+                .min(1)
+                .max(100)
+                .positive(),
+            search: Joi.string()
                 .trim()
-                .min(3)
+                .min(1)
                 .max(50)
         })
     },
